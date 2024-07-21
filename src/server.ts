@@ -55,6 +55,20 @@ app.post('/usuarios/adicionar_usuario', (req: Request, res: Response) => {
 	return res.json(usuario);
 	});
 
+app.patch('/usuarios/atualizar_peso_usuario', (req: Request, res: Response) => {
+	const nome = req.query.nome as string;
+	const peso = req.body.peso;
+
+	const usuario = usuarios.find(a => a.nome === nome);
+
+	if (usuario !== undefined) {
+		usuario.peso = peso;
+		return res.json(usuario);
+	} else {
+		return res.status(404).json({ message: 'Usuário não encontrado' });
+	}
+});
+
 const refeicoes = [
 	{ id: 1, nome_usuario: "joao", nome_refeicao: "refeicao1", lista_alimentos: [{ id: 3, nome: "Arroz Integral", kcal: 123, carboidrato: 25.6, gordura: 0.9, proteina: 2.7 },{ id: 4, nome: "Peito de Frango", kcal: 165, carboidrato: 0, gordura: 3.6, proteina: 31 }]},
 	{ id: 2, nome_usuario: "joao", nome_refeicao: "refeicao2", lista_alimentos: [{ id: 3, nome: "Arroz Integral", kcal: 123, carboidrato: 25.6, gordura: 0.9, proteina: 2.7 },{ id: 4, nome: "Peito de Frango", kcal: 165, carboidrato: 0, gordura: 3.6, proteina: 31 }]},
