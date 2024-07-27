@@ -2,11 +2,11 @@ import { Usuario } from '../../model/usuarioModel';
 import { updatePesoUsuarioRepository,findUsuarioByLoginRepository } from '../../repositories/usuarioRepository';
 
 
-export const atualizarPesoUsuarioService = (login: string, peso: number): Usuario | undefined => {
-const result = findUsuarioByLoginRepository(login);
-if (result) {
-	return updatePesoUsuarioRepository(login, peso);
+export const atualizarPesoUsuarioService = async (login: string, peso: number): Promise<Usuario | null> => {
+const result = await findUsuarioByLoginRepository(login);
+if (result !== null) {
+	return await updatePesoUsuarioRepository(login, peso);
 } else {
-	return undefined;
+	return null;
 }
 };

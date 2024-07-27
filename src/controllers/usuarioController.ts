@@ -6,9 +6,9 @@ import {adicionarUsuarioService  } from '../services/usuario/usuarioAdicionarSer
 
 const router = Router();
 
-router.get('/pesquisar_usuario', (req: Request, res: Response) => {
+router.get('/pesquisar_usuario', async (req: Request, res: Response) => {
   const loginUsuario = decodeURIComponent(req.query.login as string);
-  const result = pesquisarUsuarioService(loginUsuario);
+  const result = await pesquisarUsuarioService(loginUsuario);
   if (result) {
     return res.status(200).json(result);
   } else {
@@ -16,9 +16,9 @@ router.get('/pesquisar_usuario', (req: Request, res: Response) => {
   }
 });
 
-router.post('/adicionar_usuario', (req: Request, res: Response) => {
+router.post('/adicionar_usuario', async (req: Request, res: Response) => {
   const usuario:Usuario = req.body;
-  const result = adicionarUsuarioService(usuario);	
+  const result = await adicionarUsuarioService(usuario);	
   if (result) {
     return res.status(201).json(result);
   } else {
@@ -26,10 +26,10 @@ router.post('/adicionar_usuario', (req: Request, res: Response) => {
   }
 });
 
-router.patch('/atualizar_peso_usuario', (req: Request, res: Response) => {
+router.patch('/atualizar_peso_usuario', async (req: Request, res: Response) => {
   const login = req.query.login as string;
   const peso = req.body.peso;
-  const result = atualizarPesoUsuarioService(login,peso);
+  const result = await atualizarPesoUsuarioService(login,peso);
   if (result) {
     return res.json(result);
   } else {
