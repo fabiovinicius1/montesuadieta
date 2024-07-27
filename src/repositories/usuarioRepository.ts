@@ -25,7 +25,7 @@ export const addUsuarioRepository = async (usuario: Usuario): Promise<Usuario | 
 };
 
 export const updatePesoUsuarioRepository = async (login: string, peso: number): Promise<Usuario | null> => {
-	await prisma.usuarios.update({
+	const usuarioUpdatePeso = await prisma.usuarios.update({
 		where:{
 			login
 		},
@@ -33,7 +33,5 @@ export const updatePesoUsuarioRepository = async (login: string, peso: number): 
 			peso
 		}
 	})
-	const usuarioUpdatePeso = await findUsuarioByLoginRepository(login);
-
   return usuarioUpdatePeso;
 };
