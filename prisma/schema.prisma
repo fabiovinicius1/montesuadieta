@@ -17,4 +17,15 @@ model usuarios {
 	peso Int
 }
 
+model alimentosTabelaApp{
+	id Int @id @default(autoincrement())
+	nome String
+	caloria Float
+	proteina Float
+	carboidrato Float
+	saturados Float
+	monoinsaturados Float
+	poliinsaturados Float
+	gordutaTotal Float
+}
 
