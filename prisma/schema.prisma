@@ -15,10 +15,13 @@ model usuarios {
     login String @unique
     senha String
 	peso Int
+	alimentos alimentosUsuario[]
+	refeicoes refeicaoUsuario[]
 }
 
 model alimentosTabelaApp{
 	id Int @id @default(autoincrement())
+	porcao Int @default(100)
 	nome String
 	caloria Float
 	proteina Float
@@ -29,3 +32,38 @@ model alimentosTabelaApp{
 	gordutaTotal Float
 }
 
+model alimentosUsuario{
+	id Int @id @default(autoincrement())
+	porcao Int
+	caloria Float
+	proteina Float
+	carboidrato Float
+	saturados Float
+	monoinsaturados Float
+	poliinsaturados Float
+	gordutaTotal Float
+	usuario usuarios @relation(fields: [usuarioId], references: [id])
+	usuarioId String
+}
+
+model refeicaoUsuario{
+	id Int @id @default(autoincrement())
+	nome String
+	usuario usuarios @relation(fields: [usuarioId], references: [id])
+	usuarioId String
+	alimentosRefeicao alimentosRefeicao[]
+}
+
+model alimentosRefeicao{
+	id Int @id @default(autoincrement())
+	porcao Int
+	caloria Float
+	proteina Float
+	carboidrato Float
+	saturados Float
+	monoinsaturados Float
+	poliinsaturados Float
+	gordutaTotal Float
+	refeicao refeicaoUsuario @relation(fields: [refeicaoId], references: [id])
+	refeicaoId Int
+}
