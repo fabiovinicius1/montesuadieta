@@ -8,7 +8,7 @@ import { UsuarioPostPutDto } from '../dto/usuarioDto/usuarioPostPutDto';
 
 const router = Router();
 
-router.get('/pesquisar_usuario', async (req: Request, res: Response) => {
+router.get('/pesquisar', async (req: Request, res: Response) => {
   const usuario:UsuarioGetDto = req.body;
   const result = await pesquisarUsuarioService(usuario.login);
   if (result) {
@@ -18,7 +18,7 @@ router.get('/pesquisar_usuario', async (req: Request, res: Response) => {
   }
 });
 
-router.post('/adicionar_usuario', async (req: Request, res: Response) => {
+router.post('/adicionar', async (req: Request, res: Response) => {
   const usuario:UsuarioPostPutDto = req.body;
   const result = await adicionarUsuarioService(usuario);	
   if (result) {
@@ -28,7 +28,7 @@ router.post('/adicionar_usuario', async (req: Request, res: Response) => {
   }
 });
 
-router.patch('/atualizar_peso_usuario', async (req: Request, res: Response) => {
+router.patch('/atualizar/peso', async (req: Request, res: Response) => {
 const usuario:UsuarioPatchPesoDto = req.body;
   const result = await atualizarPesoUsuarioService(usuario.login,usuario.peso);
   if (result) {
