@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
     provider = "sqlite"
-    url      = env("DATABASE_URL")
+    url      = "file:./dev.db"
 }
 
 model usuarios {
@@ -42,15 +42,15 @@ model alimentosUsuario{
 	monoinsaturados Float
 	poliinsaturados Float
 	gordutaTotal Float
-	usuario usuarios @relation(fields: [usuarioId], references: [id])
-	usuarioId String
+	usuario usuarios @relation(fields: [usuarioLogin], references: [id])
+	usuarioLogin String
 }
 
 model refeicaoUsuario{
 	id Int @id @default(autoincrement())
 	nome String
-	usuario usuarios @relation(fields: [usuarioId], references: [id])
-	usuarioId String
+	usuario usuarios @relation(fields: [usuarioLogin], references: [id])
+	usuarioLogin String
 	alimentosRefeicao alimentosRefeicao[]
 }
 
