@@ -1,11 +1,12 @@
-import { Usuario } from '../../model/usuarioModel';
-import { updatePesoUsuarioRepository,findUsuarioByLoginRepository } from '../../repositories/usuarioRepository';
+import { UsuarioPatchPesoDto } from '../../dto/usuarioDto/usuarioPatchPesoDto';
+import { Usuario } from '../../model/Usuario';
+import { atualizarPesoUsuarioRepository,buscarUsuarioPeloLoginRepository } from '../../repositories/usuarioRepository';
 
 
-export const atualizarPesoUsuarioService = async (login: string, peso: number): Promise<Usuario | null> => {
-const result = await findUsuarioByLoginRepository(login);
+export const atualizarPesoUsuarioService = async (usuarioPatchPesoDto: UsuarioPatchPesoDto): Promise<Usuario | null> => {
+const result = await buscarUsuarioPeloLoginRepository(usuarioPatchPesoDto);
 if (result !== null) {
-	return await updatePesoUsuarioRepository(login, peso);
+	return await atualizarPesoUsuarioRepository(usuarioPatchPesoDto);
 } else {
 	return null;
 }

@@ -1,31 +1,45 @@
-import { Usuario } from '../model/usuarioModel';
 import { PrismaClient } from '@prisma/client';
+import { Usuario } from '../model/Usuario'; // Supondo que a definição da classe está em models.ts
+import { UsuarioPostPutDto } from '../dto/usuarioDto/usuarioPostPutDto';
+import { UsuarioGetDeleteDto } from '../dto/usuarioDto/usuarioGetDeleteDto';
+import { UsuarioPatchPesoDto } from '../dto/usuarioDto/usuarioPatchPesoDto';
 
 const prisma = new PrismaClient();
 
-export const findUsuarioByLoginRepository = async (login: string): Promise<Usuario | null> => {
-	const usuarioFind = await prisma.usuarios.findFirst({
-		where:{
-			login
-		}
-	})
-  return usuarioFind;
+export const buscarUsuarioPeloLoginRepository = async (usuarioGetDeleteDto: UsuarioGetDeleteDto): Promise<Usuario | null> => {
+	const login = usuarioGetDeleteDto.login
+  const result = await prisma.usuarios.findFirst({
+    where: {
+      login,
+    },
+    include: {
+		refeicoes: {
+		  include: {
+			alimentosRefeicao: true,
+		  },
+		},
+	  },
+  });
+
+  return result;
 };
 
-export const addUsuarioRepository = async (usuario: Usuario): Promise<Usuario | null> => {
-	const {login, senha, peso} = usuario;
-	const usuarioCreate = await prisma.usuarios.create({
+export const adicionarUsuarioRepository = async (usuarioPostPutDto: UsuarioPostPutDto): Promise<Usuario | null> => {
+	const {login, senha, peso} = usuarioPostPutDto;
+	const result = await prisma.usuarios.create({
 		data:{
 			login,
 			senha,
 			peso
 		}
 	})
- return usuarioCreate;
+ return result;
 };
 
-export const updatePesoUsuarioRepository = async (login: string, peso: number): Promise<Usuario | null> => {
-	const usuarioUpdatePeso = await prisma.usuarios.update({
+export const atualizarPesoUsuarioRepository = async (usuarioPatchPesoDto: UsuarioPatchPesoDto): Promise<Usuario | null> => {
+	const login = usuarioPatchPesoDto.login;
+	const peso = usuarioPatchPesoDto.peso;
+	const result = await prisma.usuarios.update({
 		where:{
 			login
 		},
@@ -33,5 +47,15 @@ export const updatePesoUsuarioRepository = async (login: string, peso: number): 
 			peso
 		}
 	})
-  return usuarioUpdatePeso;
+  return result;
+};
+
+export const removerPesoUsuarioRepository = async (usuarioGetDeleteDto: UsuarioGetDeleteDto): Promise<Usuario | null> => {
+	const login = usuarioGetDeleteDto.login
+	const result = await prisma.usuarios.delete({
+		where:{
+			login
+		}
+	})
+  return result;
 };
