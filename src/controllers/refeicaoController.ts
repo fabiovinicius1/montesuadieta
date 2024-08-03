@@ -1,23 +1,23 @@
 import { Request, Response, Router } from 'express';
 import { RefeicaoPostPutDto } from '../dto/refeicaoDto/refeicaoPostPutDto';
-import { RefeicaoGetDto } from '../dto/refeicaoDto/refeicaoGetDto';
+import { RefeicaoGetDeleteDto } from '../dto/refeicaoDto/refeicaoGetDeleteDto';
 import { refeicaoUsuarioAdicionarService } from '../services/refeicao/refeicaoUsuarioAdicionarService';
-import { RefeicaoDeleteDto } from '../dto/refeicaoDto/refeicaoDeleteDto';
 import { refeicaoUsuarioRemoverService } from '../services/refeicao/refeicaoUsuarioRemoverService';
-// import { pesquisarRefeicaoUsuarioService } from '../services/refeicao/pesquisarRefeicaoUsuarioService';
-// import { adiciorRefeicaoUsuarioService } from '../services/refeicao/adicionarReceicaoUsuarioService';
+import { refeicaoUsuarioPesquisarService } from '../services/refeicao/refeicaoUsuarioPesquisarService';
+import { RefeicaoPatchNomeDto } from '../dto/refeicaoDto/refeicaoPatchNomeDto';
+import { atualizarNomeRefeicaoUsuarioService } from '../services/refeicao/refeicaoUsuarioAtualizarNome';
 
 const router = Router();
 
-// router.get('/pesquisar', async (req: Request, res: Response) => {
-// 	const refeicaoGetDeleteDto: RefeicaoGetDeleteDto = req.body;
-// 	const result = await pesquisarRefeicaoUsuarioService(refeicaoGetDeleteDto);
-// 	if (result) {
-// 		return res.status(200).json(result);
-// 	} else {
-// 		return res.status(404).json({ message: "Usuario não possui refeição cadastrada" });
-// 	}
-// });
+router.get('/pesquisar', async (req: Request, res: Response) => {
+	const refeicaoGetDeleteDto: RefeicaoGetDeleteDto = req.body;
+	const result = await refeicaoUsuarioPesquisarService(refeicaoGetDeleteDto);
+	if (result) {
+		return res.status(200).json(result);
+	} else {
+		return res.status(404).json({ message: "Usuario não possui refeição cadastrada" });
+	}
+});
 
 router.post('/adicionar', async (req: Request, res: Response) => {
 	const refeicaoPostPutDto: RefeicaoPostPutDto = req.body;
@@ -29,14 +29,19 @@ router.post('/adicionar', async (req: Request, res: Response) => {
 	}
 });
 
-// router.patch('/atualizar/nome', (req: Request, res: Response) => {
-// 	const nomeUsuario = decodeURIComponent(req.query.nome as string);
-
-// });
+router.patch('/atualizar/nome', async (req: Request, res: Response) => {
+	const refeicaoPatchNomeDto: RefeicaoPatchNomeDto = req.body;
+	const result = await atualizarNomeRefeicaoUsuarioService(refeicaoPatchNomeDto);
+	if (result) {
+		return res.json(result);
+	} else {
+		return res.status(404).json({ message: 'Usuário não encontrado' });
+	}
+});
 
 router.delete('/remover', async (req: Request, res: Response) => {
-	const refeicaoDeleteDto: RefeicaoDeleteDto = req.body
-	const result = await refeicaoUsuarioRemoverService(refeicaoDeleteDto);
+	const refeicaoGetDeleteDto: RefeicaoGetDeleteDto = req.body
+	const result = await refeicaoUsuarioRemoverService(refeicaoGetDeleteDto);
 	if (result) {
 		return res.status(204).json(result);
 	} else {

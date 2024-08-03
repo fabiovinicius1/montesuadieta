@@ -1,5 +1,4 @@
-import { RefeicaoDeleteDto } from '../dto/refeicaoDto/refeicaoDeleteDto';
-import { RefeicaoGetDto } from '../dto/refeicaoDto/refeicaoGetDto';
+import { RefeicaoGetDeleteDto } from '../dto/refeicaoDto/refeicaoGetDeleteDto';
 import { RefeicaoPatchNomeDto } from '../dto/refeicaoDto/refeicaoPatchNomeDto';
 import { RefeicaoPostPutDto } from '../dto/refeicaoDto/refeicaoPostPutDto';
 import { RefeicaoUsuario } from '../model/RefeicaoUsuario';
@@ -7,11 +6,12 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export const buscarRefeicaoPeloLoginUsuarioRepository = async (refeicaoGetDto: RefeicaoGetDto): Promise<RefeicaoUsuario | null> => {
-	const usuarioLogin = refeicaoGetDto.usuarioLogin;
+export const buscarRefeicaoPeloLoginUsuarioRepository = async (RefeicaoGetDeleteDto: RefeicaoGetDeleteDto): Promise<RefeicaoUsuario | null> => {
+	const { nome, usuarioLogin } = RefeicaoGetDeleteDto;
 	const result = await prisma.refeicaoUsuario.findFirst({
 		where: {
-			usuarioLogin
+			usuarioLogin,
+			nome
 		},
 		include: {
 			alimentosRefeicao: true
@@ -32,8 +32,9 @@ export const adicionarRefeicaoUsuarioRepository = async (refeicaoPostPutDto: Ref
 };
 
 export const atualizarNomeRefeicaoRepository = async (refeicaoPatchNomeDto: RefeicaoPatchNomeDto): Promise<RefeicaoUsuario | null> => {
-	const { nome } = refeicaoPatchNomeDto;
-	const resultBusca = await buscarRefeicaoPeloLoginUsuarioRepository(refeicaoPatchNomeDto);
+	const refeicaoGetDeleteDto: RefeicaoGetDeleteDto = { "usuarioLogin": refeicaoPatchNomeDto.usuarioLogin, "nome": refeicaoPatchNomeDto.nome};
+	const nome = refeicaoPatchNomeDto.nomeAtualizado;
+	const resultBusca = await buscarRefeicaoPeloLoginUsuarioRepository(refeicaoGetDeleteDto);
 	const id = resultBusca?.id
 	const result = await prisma.refeicaoUsuario.update({
 		where: {
@@ -46,8 +47,8 @@ export const atualizarNomeRefeicaoRepository = async (refeicaoPatchNomeDto: Refe
 	return result;
 };
 
-export const removerRefeicaoRepository = async (refeicaoDeleteDto: RefeicaoDeleteDto): Promise<RefeicaoUsuario | null> => {
-	const resultBusca = await buscarRefeicaoPeloLoginUsuarioRepository(refeicaoDeleteDto);
+export const removerRefeicaoRepository = async (RefeicaoGetDeleteDto: RefeicaoGetDeleteDto): Promise<RefeicaoUsuario | null> => {
+	const resultBusca = await buscarRefeicaoPeloLoginUsuarioRepository(RefeicaoGetDeleteDto);
 	const id = resultBusca?.id
 	const result = await prisma.refeicaoUsuario.delete({
 		where: {
