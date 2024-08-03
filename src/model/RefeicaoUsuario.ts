@@ -4,5 +4,5 @@ export interface RefeicaoUsuario {
 	id: number;
 	nome: string;
 	usuarioLogin: string;
-	alimentosRefeicao: AlimentoRefeicao[];
+	alimentosRefeicao?: AlimentoRefeicao[];
 }

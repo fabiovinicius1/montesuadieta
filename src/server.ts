@@ -14,9 +14,9 @@ app.use('/refeicoes', refeicaoController);
 
 
 app.get('/', (req: Request, res: Response) => {
-  res.send('Hello, world!');
+	res.send('Hello, world!');
 });
 
 app.listen(port, () => {
-  console.log(`Servidor rodando em http://localhost:${port}`);
+	console.log(`Servidor rodando em http://localhost:${port}`);
 });

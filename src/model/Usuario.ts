@@ -8,4 +8,4 @@ export interface Usuario {
 	peso: number;
 	alimentosUsuario?: AlimentoUsuario[];
 	refeicoesUsuario?: RefeicaoUsuario[];
-  }
+}
