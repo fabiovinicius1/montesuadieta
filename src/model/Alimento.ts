@@ -7,4 +7,4 @@ export interface Alimento {
 	monoinsaturados: number;
 	poliinsaturados: number;
 	gordutaTotal: number;
-  }
+}

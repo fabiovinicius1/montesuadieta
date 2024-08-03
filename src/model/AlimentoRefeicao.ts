@@ -9,5 +9,4 @@ export interface AlimentoRefeicao {
 	poliinsaturados: number;
 	gordutaTotal: number;
 	refeicaoId: number;
-  
-  }
+}
