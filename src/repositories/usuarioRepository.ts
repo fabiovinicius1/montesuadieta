@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { Usuario } from '../model/Usuario'; // Supondo que a definição da classe está em models.ts
+import { Usuario } from '../model/Usuario';
 import { UsuarioPostPutDto } from '../dto/usuarioDto/usuarioPostPutDto';
 import { UsuarioGetDeleteDto } from '../dto/usuarioDto/usuarioGetDeleteDto';
 import { UsuarioPatchPesoDto } from '../dto/usuarioDto/usuarioPatchPesoDto';
