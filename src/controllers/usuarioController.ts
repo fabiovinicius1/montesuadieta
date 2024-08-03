@@ -5,7 +5,7 @@ import { adicionarUsuarioService } from '../services/usuario/usuarioAdicionarSer
 import { UsuarioGetDeleteDto } from '../dto/usuarioDto/usuarioGetDeleteDto';
 import { UsuarioPatchPesoDto } from '../dto/usuarioDto/usuarioPatchPesoDto';
 import { UsuarioPostPutDto } from '../dto/usuarioDto/usuarioPostPutDto';
-import { removerUsuarioService } from '../services/usuario/removerUsuarioService';
+import { usuarioRemoverService } from '../services/usuario/usuarioRemoverService';
 
 const router = Router();
 
@@ -41,7 +41,7 @@ router.patch('/atualizar/peso', async (req: Request, res: Response) => {
 
 router.delete('/remover', async (req: Request, res: Response) => {
 	const usuarioGetDeleteDto: UsuarioGetDeleteDto = req.body;
-	const result = await removerUsuarioService(usuarioGetDeleteDto);
+	const result = await usuarioRemoverService(usuarioGetDeleteDto);
 	if (result) {
 		return res.status(204).json(result);
 	} else {
