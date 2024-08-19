@@ -11,59 +11,61 @@ datasource db {
 }
 
 model usuarios {
-    id    String @id @default(uuid())
-    login String @unique
-    senha String
-	peso Int
-	alimentos alimentosUsuario[]
-	refeicoes refeicaoUsuario[]
+    id        Int                @id @default(autoincrement())
+    login     String             @unique
+    senha     String
+    peso      Int
+    alimentos alimentosUsuario[]
+    refeicoes refeicaoUsuario[]
 }
 
-model alimentosTabelaApp{
-	id Int @id @default(autoincrement())
-	porcao Int @default(100)
-	nome String
-	caloria Float
-	proteina Float
-	carboidrato Float
-	saturados Float
-	monoinsaturados Float
-	poliinsaturados Float
-	gordutaTotal Float
+model alimentosTabelaApp {
+    id              Int    @id @default(autoincrement())
+    porcao          Int    @default(100)
+    nomeAlimentoApp String
+    caloria         Float
+    proteina        Float
+    carboidrato     Float
+    saturados       Float
+    monoinsaturados Float
+    poliinsaturados Float
+    gordutaTotal    Float
 }
 
-model alimentosUsuario{
-	id Int @id @default(autoincrement())
-	porcao Int
-	caloria Float
-	proteina Float
-	carboidrato Float
-	saturados Float
-	monoinsaturados Float
-	poliinsaturados Float
-	gordutaTotal Float
-	usuario usuarios @relation(fields: [usuarioLogin], references: [login])
-	usuarioLogin String
+model alimentosUsuario {
+    id                  Int      @id @default(autoincrement())
+    porcao              Int
+    nomeAlimentoUsuario String
+    caloria             Float
+    proteina            Float
+    carboidrato         Float
+    saturados           Float
+    monoinsaturados     Float
+    poliinsaturados     Float
+    gordutaTotal        Float
+    usuario             usuarios @relation(fields: [usuarioId], references: [id])
+    usuarioId           Int
 }
 
-model refeicaoUsuario{
-	id Int @id @default(autoincrement())
-	nome String
-	usuario usuarios @relation(fields: [usuarioLogin], references: [login])
-	usuarioLogin String
-	alimentosRefeicao alimentosRefeicao[]
+model refeicaoUsuario {
+    id                Int                 @id @default(autoincrement())
+    nomeRefeicao      String
+    usuario           usuarios            @relation(fields: [usuarioId], references: [id])
+    usuarioId         Int
+    alimentosRefeicao alimentosRefeicao[]
 }
 
-model alimentosRefeicao{
-	id Int @id @default(autoincrement())
-	porcao Int
-	caloria Float
-	proteina Float
-	carboidrato Float
-	saturados Float
-	monoinsaturados Float
-	poliinsaturados Float
-	gordutaTotal Float
-	refeicao refeicaoUsuario @relation(fields: [refeicaoId], references: [id])
-	refeicaoId Int
+model alimentosRefeicao {
+    id                   Int             @id @default(autoincrement())
+    porcao               Int
+    nomeAlimentoRefeicao String
+    caloria              Float
+    proteina             Float
+    carboidrato          Float
+    saturados            Float
+    monoinsaturados      Float
+    poliinsaturados      Float
+    gordutaTotal         Float
+    refeicao             refeicaoUsuario @relation(fields: [refeicaoId], references: [id])
+    refeicaoId           Int
 }

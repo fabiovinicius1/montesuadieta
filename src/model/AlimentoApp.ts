@@ -1,5 +1,6 @@
-export interface Alimento {
-	nome: string;
+export interface AlimentoApp {
+	nomeAlimentoApp: string;
+	porcao: number;
 	caloria: number;
 	proteina: number;
 	carboidrato: number;
