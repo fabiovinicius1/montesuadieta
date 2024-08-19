@@ -1,13 +1,10 @@
 import { RefeicaoPatchNomeDto } from '../../dto/refeicaoDto/refeicaoPatchNomeDto';
-import { UsuarioGetDeleteDto } from '../../dto/usuarioDto/usuarioGetDeleteDto';
 import { RefeicaoUsuario } from '../../model/RefeicaoUsuario';
-import { atualizarNomeRefeicaoRepository } from '../../repositories/refeicaoRepository';
-import { buscarUsuarioPeloLoginRepository } from '../../repositories/usuarioRepository';
+import { atualizarNomeRefeicaoRepository, buscarRefeicaoPeloIdRepository } from '../../repositories/refeicaoRepository';
 
 
 export const atualizarNomeRefeicaoUsuarioService = async (refeicaoPatchNomeDto: RefeicaoPatchNomeDto): Promise< RefeicaoUsuario| null> => {
-	const usuarioGetDeleteDto: UsuarioGetDeleteDto = { "login": refeicaoPatchNomeDto.usuarioLogin };
-	const result = await buscarUsuarioPeloLoginRepository(usuarioGetDeleteDto);
+	const result = await buscarRefeicaoPeloIdRepository(refeicaoPatchNomeDto);
 	if (result !== null) {
 		return await atualizarNomeRefeicaoRepository(refeicaoPatchNomeDto);
 	} else {

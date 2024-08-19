@@ -1,4 +1,4 @@
 export interface RefeicaoPostPutDto {
-	nome: string;
-	usuarioLogin: string;
+	nomeRefeicao: string;
+	usuarioId: number;
 }

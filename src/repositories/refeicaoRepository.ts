@@ -6,49 +6,44 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export const buscarRefeicaoPeloLoginUsuarioRepository = async (RefeicaoGetDeleteDto: RefeicaoGetDeleteDto): Promise<RefeicaoUsuario | null> => {
-	const { nome, usuarioLogin } = RefeicaoGetDeleteDto;
+export const buscarRefeicaoPeloIdRepository = async (RefeicaoGetDeleteDto: RefeicaoGetDeleteDto): Promise<RefeicaoUsuario | null> => {
+	const { id } = RefeicaoGetDeleteDto;
 	const result = await prisma.refeicaoUsuario.findFirst({
 		where: {
-			usuarioLogin,
-			nome
-		},
-		include: {
-			alimentosRefeicao: true
+			id
 		}
 	})
 	return result;
 };
 
 export const adicionarRefeicaoUsuarioRepository = async (refeicaoPostPutDto: RefeicaoPostPutDto): Promise<RefeicaoUsuario | null> => {
-	const { nome, usuarioLogin } = refeicaoPostPutDto;
+	const { nomeRefeicao, usuarioId } = refeicaoPostPutDto;
 	const result = await prisma.refeicaoUsuario.create({
 		data: {
-			nome,
-			usuarioLogin
+			nomeRefeicao,
+			usuarioId
 		}
 	})
 	return result;
 };
 
 export const atualizarNomeRefeicaoRepository = async (refeicaoPatchNomeDto: RefeicaoPatchNomeDto): Promise<RefeicaoUsuario | null> => {
-	const refeicaoGetDeleteDto: RefeicaoGetDeleteDto = { "usuarioLogin": refeicaoPatchNomeDto.usuarioLogin, "nome": refeicaoPatchNomeDto.nome};
-	const nome = refeicaoPatchNomeDto.nomeAtualizado;
-	const resultBusca = await buscarRefeicaoPeloLoginUsuarioRepository(refeicaoGetDeleteDto);
+	const resultBusca = await buscarRefeicaoPeloIdRepository(refeicaoPatchNomeDto);
+	const { nomeRefeicao } = refeicaoPatchNomeDto
 	const id = resultBusca?.id
 	const result = await prisma.refeicaoUsuario.update({
 		where: {
 			id
 		},
 		data: {
-			nome
+			nomeRefeicao
 		}
 	})
 	return result;
 };
 
 export const removerRefeicaoRepository = async (RefeicaoGetDeleteDto: RefeicaoGetDeleteDto): Promise<RefeicaoUsuario | null> => {
-	const resultBusca = await buscarRefeicaoPeloLoginUsuarioRepository(RefeicaoGetDeleteDto);
+	const resultBusca = await buscarRefeicaoPeloIdRepository(RefeicaoGetDeleteDto);
 	const id = resultBusca?.id
 	const result = await prisma.refeicaoUsuario.delete({
 		where: {

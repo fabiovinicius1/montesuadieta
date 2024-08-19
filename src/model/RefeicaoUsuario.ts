@@ -1,7 +1,8 @@
 import { AlimentoRefeicao } from "./AlimentoRefeicao";
 
 export interface RefeicaoUsuario {
-	nome: string;
+	id: number;
+	nomeRefeicao: string;
 	usuarioId: number;
 	alimentosRefeicao?: AlimentoRefeicao[];
 }

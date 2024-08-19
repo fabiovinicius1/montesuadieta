@@ -1,5 +1,4 @@
 export interface RefeicaoPatchNomeDto {
-	nome: string;
-	usuarioLogin: string;
-	nomeAtualizado: string;
+	id: number;
+	nomeRefeicao: string;
 }
