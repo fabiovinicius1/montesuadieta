@@ -28,9 +28,7 @@ export const adicionarRefeicaoUsuarioRepository = async (refeicaoPostPutDto: Ref
 };
 
 export const atualizarNomeRefeicaoRepository = async (refeicaoPatchNomeDto: RefeicaoPatchNomeDto): Promise<RefeicaoUsuario | null> => {
-	const resultBusca = await buscarRefeicaoPeloIdRepository(refeicaoPatchNomeDto);
-	const { nomeRefeicao } = refeicaoPatchNomeDto
-	const id = resultBusca?.id
+	const { id, nomeRefeicao } = refeicaoPatchNomeDto
 	const result = await prisma.refeicaoUsuario.update({
 		where: {
 			id
@@ -42,9 +40,8 @@ export const atualizarNomeRefeicaoRepository = async (refeicaoPatchNomeDto: Refe
 	return result;
 };
 
-export const removerRefeicaoRepository = async (RefeicaoGetDeleteDto: RefeicaoGetDeleteDto): Promise<RefeicaoUsuario | null> => {
-	const resultBusca = await buscarRefeicaoPeloIdRepository(RefeicaoGetDeleteDto);
-	const id = resultBusca?.id
+export const removerRefeicaoRepository = async (refeicaoGetDeleteDto: RefeicaoGetDeleteDto): Promise<RefeicaoUsuario | null> => {
+	const { id } = refeicaoGetDeleteDto
 	const result = await prisma.refeicaoUsuario.delete({
 		where: {
 			id
