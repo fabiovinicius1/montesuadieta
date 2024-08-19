@@ -1,5 +1,5 @@
 export interface AlimentoRefeicao {
-	id: number;
+	nomeAlimentoRefeicao: string;
 	porcao: number;
 	caloria: number;
 	proteina: number;

@@ -1,5 +1,5 @@
 export interface AlimentoUsuario {
-	id: number;
+	nomeAlimentoUsuario: string;
 	porcao: number;
 	caloria: number;
 	proteina: number;
@@ -9,5 +9,4 @@ export interface AlimentoUsuario {
 	poliinsaturados: number;
 	gordutaTotal: number;
 	usuarioLogin: string;
-
 }
