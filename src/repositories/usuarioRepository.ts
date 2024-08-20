@@ -6,19 +6,12 @@ import { UsuarioPatchPesoDto } from '../dto/usuarioDto/usuarioPatchPesoDto';
 
 const prisma = new PrismaClient();
 
-export const buscarUsuarioPeloLoginRepository = async (usuarioGetDeleteDto: UsuarioGetDeleteDto): Promise<Usuario | null> => {
-	const login = usuarioGetDeleteDto.login
+export const buscarUsuarioPeloIdRepository = async (usuarioGetDeleteDto: UsuarioGetDeleteDto): Promise<Usuario | null> => {
+	const { id } = usuarioGetDeleteDto
 	const result = await prisma.usuarios.findFirst({
 		where: {
-			login,
-		},
-		include: {
-			refeicoes: {
-				include: {
-					alimentosRefeicao: true,
-				},
-			},
-		},
+			id
+		}
 	});
 
 	return result;
@@ -37,11 +30,10 @@ export const adicionarUsuarioRepository = async (usuarioPostPutDto: UsuarioPostP
 };
 
 export const atualizarPesoUsuarioRepository = async (usuarioPatchPesoDto: UsuarioPatchPesoDto): Promise<Usuario | null> => {
-	const login = usuarioPatchPesoDto.login;
-	const peso = usuarioPatchPesoDto.peso;
+	const { id, peso } = usuarioPatchPesoDto;
 	const result = await prisma.usuarios.update({
 		where: {
-			login
+			id
 		},
 		data: {
 			peso
@@ -51,10 +43,10 @@ export const atualizarPesoUsuarioRepository = async (usuarioPatchPesoDto: Usuari
 };
 
 export const removerPesoUsuarioRepository = async (usuarioGetDeleteDto: UsuarioGetDeleteDto): Promise<Usuario | null> => {
-	const login = usuarioGetDeleteDto.login
+	const { id } = usuarioGetDeleteDto
 	const result = await prisma.usuarios.delete({
 		where: {
-			login
+			id
 		}
 	})
 	return result;

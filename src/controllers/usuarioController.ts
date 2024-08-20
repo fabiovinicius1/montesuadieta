@@ -22,11 +22,7 @@ router.get('/pesquisar', async (req: Request, res: Response) => {
 router.post('/adicionar', async (req: Request, res: Response) => {
 	const usuarioPostPutDto: UsuarioPostPutDto = req.body;
 	const result = await adicionarUsuarioService(usuarioPostPutDto);
-	if (result) {
-		return res.status(201).json(result);
-	} else {
-		return res.status(404).json({ message: "Login já existente" });
-	}
+	return res.status(201).json(result);
 });
 
 router.patch('/atualizar/peso', async (req: Request, res: Response) => {

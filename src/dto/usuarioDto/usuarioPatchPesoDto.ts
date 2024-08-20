@@ -1,4 +1,4 @@
 export interface UsuarioPatchPesoDto {
-	login: string;
+	id: number;
 	peso: number;
 }
