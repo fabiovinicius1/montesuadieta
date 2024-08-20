@@ -5,7 +5,7 @@ import { AlimentoAppPostPutDto } from '../dto/alimentoAppDto/alimentoAppPostPutD
 const prisma = new PrismaClient();
 
 export const addAlimentoAppRepository = async (alimentoAppPostPutDto: AlimentoAppPostPutDto): Promise<AlimentoApp | null> => {
-	const { nomeAlimentoApp, caloria, proteina, carboidrato, saturados, monoinsaturados, poliinsaturados, gordutaTotal } = alimentoAppPostPutDto;
+	const { nomeAlimentoApp, caloria, proteina, carboidrato, saturados, monoinsaturados, poliinsaturados, gordutaTotal, porcao } = alimentoAppPostPutDto;
 	const alimentoCreate = await prisma.alimentosTabelaApp.create({
 		data: {
 			nomeAlimentoApp,
@@ -15,7 +15,8 @@ export const addAlimentoAppRepository = async (alimentoAppPostPutDto: AlimentoAp
 			saturados,
 			monoinsaturados,
 			poliinsaturados,
-			gordutaTotal
+			gordutaTotal,
+			porcao
 		}
 	})
 	return alimentoCreate;

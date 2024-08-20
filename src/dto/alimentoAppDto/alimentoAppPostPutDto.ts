@@ -1,5 +1,6 @@
 export interface AlimentoAppPostPutDto {
 	nomeAlimentoApp: string
+	porcao: number;
 	caloria: number
 	proteina: number
 	carboidrato: number
