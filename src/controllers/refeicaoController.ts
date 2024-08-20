@@ -6,6 +6,10 @@ import { refeicaoUsuarioRemoverService } from '../services/refeicao/refeicaoUsua
 import { refeicaoUsuarioPesquisarService } from '../services/refeicao/refeicaoUsuarioPesquisarService';
 import { RefeicaoPatchNomeDto } from '../dto/refeicaoDto/refeicaoPatchNomeDto';
 import { atualizarNomeRefeicaoUsuarioService } from '../services/refeicao/refeicaoUsuarioAtualizarNome';
+import { RefeicaoAlimentoPostDto } from '../dto/refeicaoDto/refeicaoAlimentoPostDto';
+import { refeicaoUsuarioAdicionarAlimentoService } from '../services/refeicao/refeicaoUsuarioAdicionarAlimentoService';
+import { refeicaoUsuarioRemoverAlimentoService } from '../services/refeicao/refeicaoUsuarioRemoverAlimentoService';
+import { RefeicaoAlimentoDeleteDto } from '../dto/refeicaoDto/RefeicaoAlimentoDeleteDto';
 
 const router = Router();
 
@@ -15,18 +19,14 @@ router.get('/pesquisar', async (req: Request, res: Response) => {
 	if (result) {
 		return res.status(200).json(result);
 	} else {
-		return res.status(404).json({ message: "Usuario não possui refeição cadastrada" });
+		return res.status(404).json({ message: "refeicao não encontrado" });
 	}
 });
 
 router.post('/adicionar', async (req: Request, res: Response) => {
 	const refeicaoPostPutDto: RefeicaoPostPutDto = req.body;
 	const result = await refeicaoUsuarioAdicionarService(refeicaoPostPutDto);
-	if (result) {
-		return res.status(200).json(result);
-	} else {
-		return res.status(404).json({ message: "Usuario não encontrado" });
-	}
+	return res.status(201).json(result);
 });
 
 router.patch('/atualizar/nome', async (req: Request, res: Response) => {
@@ -35,7 +35,7 @@ router.patch('/atualizar/nome', async (req: Request, res: Response) => {
 	if (result) {
 		return res.json(result);
 	} else {
-		return res.status(404).json({ message: 'Usuário não encontrado' });
+		return res.status(404).json({ message: 'refeicao não encontrado' });
 	}
 });
 
@@ -45,7 +45,27 @@ router.delete('/remover', async (req: Request, res: Response) => {
 	if (result) {
 		return res.status(204).json(result);
 	} else {
-		return res.status(404).json({ message: 'Usuário não encontrado' });
+		return res.status(404).json({ message: 'refeicao não encontrado' });
+	}
+});
+
+router.post('/adicionar/alimento', async (req: Request, res: Response) => {
+	const refeicaoAlimentoPostDeleteDto: RefeicaoAlimentoPostDto = req.body;
+	const result = await refeicaoUsuarioAdicionarAlimentoService(refeicaoAlimentoPostDeleteDto);
+	if (result) {
+		return res.status(201).json(result);
+	} else {
+		return res.status(404).json({ message: "erro" });
+	}
+});
+
+router.delete('/remover/alimento', async (req: Request, res: Response) => {
+	const refeicaoAlimentoDeleteDto: RefeicaoAlimentoDeleteDto = req.body
+	const result = await refeicaoUsuarioRemoverAlimentoService(refeicaoAlimentoDeleteDto);
+	if (result) {
+		return res.status(204).json(result);
+	} else {
+		return res.status(404).json({ message: 'erro' });
 	}
 });
 export default router;
