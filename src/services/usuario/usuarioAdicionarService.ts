@@ -4,7 +4,7 @@ import { Usuario } from '../../model/Usuario';
 import { adicionarUsuarioRepository, buscarUsuarioPeloLoginRepository } from '../../repositories/usuarioRepository';
 
 export const adicionarUsuarioService = async (usuarioPostPutDto: UsuarioPostPutDto): Promise<Usuario | null> => {
-	const result = buscarUsuarioPeloLoginRepository(usuarioPostPutDto.login);
+	const result = await buscarUsuarioPeloLoginRepository(usuarioPostPutDto.login);
 	if (result === null) {
 		return await adicionarUsuarioRepository(usuarioPostPutDto);
 	}
