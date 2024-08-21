@@ -1,12 +1,12 @@
-import { UsuarioPatchPesoDto } from '../../dto/usuarioDto/usuarioPatchPesoDto';
+import { UsuarioPesoPatchRequestDTO } from '../../dto/usuarioDto/usuarioPesoPatchRequestDTO';
 import { UsuarioNaoExiste } from '../../error/UsuarioNaoExiste';
 import { Usuario } from '../../model/Usuario';
 import { atualizarPesoUsuarioRepository, buscarUsuarioPeloIdRepository } from '../../repositories/usuarioRepository';
 
-export const atualizarPesoUsuarioService = async (usuarioPatchPesoDto: UsuarioPatchPesoDto): Promise<Usuario | null> => {
-	const result = await buscarUsuarioPeloIdRepository(usuarioPatchPesoDto);
+export const atualizarPesoUsuarioService = async (usuarioPesoPatchDTO: UsuarioPesoPatchRequestDTO): Promise<Usuario | null> => {
+	const result = await buscarUsuarioPeloIdRepository(usuarioPesoPatchDTO);
 	if (result === null) {
 		throw UsuarioNaoExiste
 	}
-	return await atualizarPesoUsuarioRepository(usuarioPatchPesoDto);
+	return await atualizarPesoUsuarioRepository(usuarioPesoPatchDTO);
 };

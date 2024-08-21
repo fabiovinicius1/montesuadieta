@@ -1,12 +1,12 @@
-import { UsuarioPostPutDto } from '../../dto/usuarioDto/usuarioPostPutDto';
+import { UsuarioPostPutRequestDTO } from '../../dto/usuarioDto/usuarioPostPutRequestDTO';
 import { LoginJaExiste } from '../../error/LoginJaExiste';
 import { Usuario } from '../../model/Usuario';
 import { adicionarUsuarioRepository, buscarUsuarioPeloLoginRepository } from '../../repositories/usuarioRepository';
 
-export const adicionarUsuarioService = async (usuarioPostPutDto: UsuarioPostPutDto): Promise<Usuario | null> => {
-	const result = await buscarUsuarioPeloLoginRepository(usuarioPostPutDto.login);
+export const adicionarUsuarioService = async (usuarioPostPutRequestDTO: UsuarioPostPutRequestDTO): Promise<Usuario | null> => {
+	const result = await buscarUsuarioPeloLoginRepository(usuarioPostPutRequestDTO.login);
 	if (result === null) {
-		return await adicionarUsuarioRepository(usuarioPostPutDto);
+		return await adicionarUsuarioRepository(usuarioPostPutRequestDTO);
 	}
 	throw LoginJaExiste()
 };

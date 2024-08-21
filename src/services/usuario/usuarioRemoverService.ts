@@ -1,12 +1,12 @@
-import { UsuarioGetDeleteDto } from '../../dto/usuarioDto/usuarioGetDeleteDto';
+import { UsuarioGetDeleteRequestDTO } from '../../dto/usuarioDto/usuarioGetDeleteRequestDTO';
 import { UsuarioNaoExiste } from '../../error/UsuarioNaoExiste';
 import { Usuario } from '../../model/Usuario';
 import { removerPesoUsuarioRepository, buscarUsuarioPeloIdRepository } from '../../repositories/usuarioRepository';
 
-export const usuarioRemoverService = async (usuarioGetDeleteDto: UsuarioGetDeleteDto): Promise<Usuario | null> => {
-	const result = await buscarUsuarioPeloIdRepository(usuarioGetDeleteDto);
+export const usuarioRemoverService = async (usuarioGetDeleteRequestDTO: UsuarioGetDeleteRequestDTO): Promise<Usuario | null> => {
+	const result = await buscarUsuarioPeloIdRepository(usuarioGetDeleteRequestDTO);
 	if (result === null) {
 		throw UsuarioNaoExiste
-	} 
-	return await removerPesoUsuarioRepository(usuarioGetDeleteDto);
+	}
+	return await removerPesoUsuarioRepository(usuarioGetDeleteRequestDTO);
 };

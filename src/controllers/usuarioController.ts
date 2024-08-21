@@ -2,17 +2,17 @@ import { Request, Response, Router } from 'express';
 import { pesquisarUsuarioService } from '../services/usuario/usuarioPesquisarService';
 import { atualizarPesoUsuarioService } from '../services/usuario/usuarioAtualizarPesoService';
 import { adicionarUsuarioService } from '../services/usuario/usuarioAdicionarService';
-import { UsuarioGetDeleteDto } from '../dto/usuarioDto/usuarioGetDeleteDto';
-import { UsuarioPatchPesoDto } from '../dto/usuarioDto/usuarioPatchPesoDto';
-import { UsuarioPostPutDto } from '../dto/usuarioDto/usuarioPostPutDto';
+import { UsuarioGetDeleteRequestDTO } from '../dto/usuarioDto/usuarioGetDeleteRequestDTO';
+import { UsuarioPesoPatchRequestDTO } from '../dto/usuarioDto/usuarioPesoPatchRequestDTO';
+import { UsuarioPostPutRequestDTO } from '../dto/usuarioDto/usuarioPostPutRequestDTO';
 import { usuarioRemoverService } from '../services/usuario/usuarioRemoverService';
 
 const router = Router();
 
 router.get('/pesquisar', async (req: Request, res: Response) => {
 	try {
-		const usuarioGetDeleteDto: UsuarioGetDeleteDto = req.body;
-		const result = await pesquisarUsuarioService(usuarioGetDeleteDto);
+		const usuarioGetDeleteRequestDTO: UsuarioGetDeleteRequestDTO = req.body;
+		const result = await pesquisarUsuarioService(usuarioGetDeleteRequestDTO);
 		return res.status(200).json(result);
 	} catch (error: any) {
 		return res.status(error.statusCode).json({ message: error.message });
@@ -21,8 +21,8 @@ router.get('/pesquisar', async (req: Request, res: Response) => {
 
 router.post('/adicionar', async (req: Request, res: Response) => {
 	try {
-		const usuarioPostPutDto: UsuarioPostPutDto = req.body;
-		const result = await adicionarUsuarioService(usuarioPostPutDto);
+		const usuarioPostPutRequestDTO: UsuarioPostPutRequestDTO = req.body;
+		const result = await adicionarUsuarioService(usuarioPostPutRequestDTO);
 		return res.status(201).json(result);
 	} catch (error: any) {
 		return res.status(error.statusCode).json({ message: error.message });
@@ -31,8 +31,8 @@ router.post('/adicionar', async (req: Request, res: Response) => {
 
 router.patch('/atualizar/peso', async (req: Request, res: Response) => {
 	try {
-		const usuarioPatchPesoDto: UsuarioPatchPesoDto = req.body;
-		const result = await atualizarPesoUsuarioService(usuarioPatchPesoDto);
+		const usuarioPesoPatchDTO: UsuarioPesoPatchRequestDTO = req.body;
+		const result = await atualizarPesoUsuarioService(usuarioPesoPatchDTO);
 		return res.json(result);
 	} catch (error: any) {
 		return res.status(error.statusCode).json({ message: error.message });
@@ -41,8 +41,8 @@ router.patch('/atualizar/peso', async (req: Request, res: Response) => {
 
 router.delete('/remover', async (req: Request, res: Response) => {
 	try {
-		const usuarioGetDeleteDto: UsuarioGetDeleteDto = req.body;
-		const result = await usuarioRemoverService(usuarioGetDeleteDto);
+		const usuarioGetDeleteRequestDTO: UsuarioGetDeleteRequestDTO = req.body;
+		const result = await usuarioRemoverService(usuarioGetDeleteRequestDTO);
 		return res.status(204).json(result);
 	} catch (error: any) {
 		return res.status(error.statusCode).json({ message: error.message });
