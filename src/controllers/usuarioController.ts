@@ -6,16 +6,17 @@ import { UsuarioGetDeleteDto } from '../dto/usuarioDto/usuarioGetDeleteDto';
 import { UsuarioPatchPesoDto } from '../dto/usuarioDto/usuarioPatchPesoDto';
 import { UsuarioPostPutDto } from '../dto/usuarioDto/usuarioPostPutDto';
 import { usuarioRemoverService } from '../services/usuario/usuarioRemoverService';
+import { ifError } from 'assert';
 
 const router = Router();
 
 router.get('/pesquisar', async (req: Request, res: Response) => {
-	const usuarioGetDeleteDto: UsuarioGetDeleteDto = req.body;
-	const result = await pesquisarUsuarioService(usuarioGetDeleteDto);
-	if (result) {
+	try {
+		const usuarioGetDeleteDto: UsuarioGetDeleteDto = req.body;
+		const result = await pesquisarUsuarioService(usuarioGetDeleteDto);
 		return res.status(200).json(result);
-	} else {
-		return res.status(404).json({ message: "Usuario não encontrado" });
+	} catch (error: any) {
+		return res.status(error.statusCode).json({ message: error.message });
 	}
 });
 
