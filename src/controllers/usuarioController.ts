@@ -33,7 +33,7 @@ router.patch('/atualizar/peso', async (req: Request, res: Response) => {
 	try {
 		const usuarioPesoPatchDTO: UsuarioPesoPatchRequestDTO = req.body;
 		const result = await atualizarPesoUsuarioService(usuarioPesoPatchDTO);
-		return res.json(result);
+		return res.status(200).json(result);
 	} catch (error: any) {
 		return res.status(error.statusCode).json({ message: error.message });
 	}
