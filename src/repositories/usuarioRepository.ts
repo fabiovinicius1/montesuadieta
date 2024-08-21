@@ -17,6 +17,16 @@ export const buscarUsuarioPeloIdRepository = async (usuarioGetDeleteDto: Usuario
 	return result;
 };
 
+export const buscarUsuarioPeloLoginRepository = async (login: string): Promise<Usuario | null> => {
+	const result = await prisma.usuarios.findFirst({
+		where: {
+			login
+		}
+	});
+
+	return result;
+};
+
 export const adicionarUsuarioRepository = async (usuarioPostPutDto: UsuarioPostPutDto): Promise<Usuario | null> => {
 	const { login, senha, peso } = usuarioPostPutDto;
 	const result = await prisma.usuarios.create({
