@@ -6,8 +6,7 @@ import { UsuarioPesoPatchRequestDTO } from '../dto/usuarioDto/usuarioPesoPatchRe
 
 const prisma = new PrismaClient();
 
-export const buscarUsuarioPeloIdRepository = async (usuarioGetDeleteRequestDTO: UsuarioGetDeleteRequestDTO): Promise<Usuario | null> => {
-	const { id } = usuarioGetDeleteRequestDTO
+export const buscarUsuarioPeloIdRepository = async (id: number): Promise<Usuario | null> => {
 	const result = await prisma.usuarios.findFirst({
 		where: {
 			id

@@ -4,7 +4,7 @@ import { Usuario } from '../../model/Usuario';
 import { removerPesoUsuarioRepository, buscarUsuarioPeloIdRepository } from '../../repositories/usuarioRepository';
 
 export const usuarioRemoverService = async (usuarioGetDeleteRequestDTO: UsuarioGetDeleteRequestDTO): Promise<Usuario | null> => {
-	const result = await buscarUsuarioPeloIdRepository(usuarioGetDeleteRequestDTO);
+	const result = await buscarUsuarioPeloIdRepository(usuarioGetDeleteRequestDTO.id);
 	if (result === null) {
 		throw UsuarioNaoExiste()
 	}

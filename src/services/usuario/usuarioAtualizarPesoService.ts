@@ -4,7 +4,7 @@ import { Usuario } from '../../model/Usuario';
 import { atualizarPesoUsuarioRepository, buscarUsuarioPeloIdRepository } from '../../repositories/usuarioRepository';
 
 export const atualizarPesoUsuarioService = async (usuarioPesoPatchDTO: UsuarioPesoPatchRequestDTO): Promise<Usuario | null> => {
-	const result = await buscarUsuarioPeloIdRepository(usuarioPesoPatchDTO);
+	const result = await buscarUsuarioPeloIdRepository(usuarioPesoPatchDTO.id);
 	if (result === null) {
 		throw UsuarioNaoExiste()
 	}
