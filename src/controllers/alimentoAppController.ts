@@ -7,7 +7,7 @@ import { alimentoAppRemoverService } from '../services/alimentoApp/alimentoAppRe
 
 const router = Router();
 
-router.get('/alimentosApp/pesquisar', async (req: Request, res: Response) => {
+router.get('/pesquisar', async (req: Request, res: Response) => {
 	const alimentoAppGetDeleteDto: AlimentoAppGetDeleteDto = req.body;
 	const result = await alimentoAppPesquisarService(alimentoAppGetDeleteDto);
 	if (result) {
@@ -17,13 +17,13 @@ router.get('/alimentosApp/pesquisar', async (req: Request, res: Response) => {
 	}
 });
 
-router.post('/alimentosApp/adicionar', async (req: Request, res: Response) => {
+router.post('/adicionar', async (req: Request, res: Response) => {
 	const alimentoAppPostPutDto: AlimentoAppPostPutDto = req.body;
 	const result = await alimentoAppAdicionarService(alimentoAppPostPutDto)
 	return res.status(201).json(result)
 });
 
-router.delete('/alimentosApp/remover', async (req: Request, res: Response) => {
+router.delete('/remover', async (req: Request, res: Response) => {
 	const alimentoAppGetDeleteDto: AlimentoAppGetDeleteDto = req.body;
 	const result = await alimentoAppRemoverService(alimentoAppGetDeleteDto);
 	if (result) {
