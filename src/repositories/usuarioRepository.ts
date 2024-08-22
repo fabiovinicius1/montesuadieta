@@ -11,6 +11,11 @@ export const buscarUsuarioPeloIdRepository = async (usuarioGetDeleteRequestDTO: 
 	const result = await prisma.usuarios.findFirst({
 		where: {
 			id
+		},
+		select:{
+			id: true,
+			login: true,
+			peso: true
 		}
 	});
 
@@ -34,6 +39,11 @@ export const adicionarUsuarioRepository = async (usuarioPostPutRequestDTO: Usuar
 			login,
 			senha,
 			peso
+		},
+		select:{
+			id: true,
+			login: true,
+			peso: true
 		}
 	})
 	return result;
@@ -47,6 +57,11 @@ export const atualizarPesoUsuarioRepository = async (usuarioPesoPatchDTO: Usuari
 		},
 		data: {
 			peso
+		},
+		select:{
+			id: true,
+			login: true,
+			peso: true
 		}
 	})
 	return result;

@@ -6,7 +6,7 @@ import { removerPesoUsuarioRepository, buscarUsuarioPeloIdRepository } from '../
 export const usuarioRemoverService = async (usuarioGetDeleteRequestDTO: UsuarioGetDeleteRequestDTO): Promise<Usuario | null> => {
 	const result = await buscarUsuarioPeloIdRepository(usuarioGetDeleteRequestDTO);
 	if (result === null) {
-		throw UsuarioNaoExiste
+		throw UsuarioNaoExiste()
 	}
 	return await removerPesoUsuarioRepository(usuarioGetDeleteRequestDTO);
 };
