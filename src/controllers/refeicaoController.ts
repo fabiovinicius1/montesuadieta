@@ -14,58 +14,62 @@ import { RefeicaoAlimentoDeleteDto } from '../dto/refeicaoDto/RefeicaoAlimentoDe
 const router = Router();
 
 router.get('/pesquisar', async (req: Request, res: Response) => {
-	const refeicaoGetDeleteDto: RefeicaoGetDeleteDto = req.body;
-	const result = await refeicaoUsuarioPesquisarService(refeicaoGetDeleteDto);
-	if (result) {
+	try {
+		const refeicaoGetDeleteDto: RefeicaoGetDeleteDto = req.body;
+		const result = await refeicaoUsuarioPesquisarService(refeicaoGetDeleteDto);
 		return res.status(200).json(result);
-	} else {
-		return res.status(404).json({ message: "refeicao não encontrado" });
+	} catch (error: any) {
+		return res.status(error.statusCode).json({ message: error.message });
 	}
 });
 
 router.post('/adicionar', async (req: Request, res: Response) => {
-	const refeicaoPostPutDto: RefeicaoPostPutDto = req.body;
-	const result = await refeicaoUsuarioAdicionarService(refeicaoPostPutDto);
-	return res.status(201).json(result);
+	try {
+		const refeicaoPostPutDto: RefeicaoPostPutDto = req.body;
+		const result = await refeicaoUsuarioAdicionarService(refeicaoPostPutDto);
+		return res.status(201).json(result);
+	} catch (error: any) {
+		return res.status(error.statusCode).json({ message: error.message });
+	}
 });
 
 router.patch('/atualizar/nome', async (req: Request, res: Response) => {
-	const refeicaoPatchNomeDto: RefeicaoPatchNomeDto = req.body;
-	const result = await atualizarNomeRefeicaoUsuarioService(refeicaoPatchNomeDto);
-	if (result) {
-		return res.json(result);
-	} else {
-		return res.status(404).json({ message: 'refeicao não encontrado' });
+	try {
+		const refeicaoPatchNomeDto: RefeicaoPatchNomeDto = req.body;
+		const result = await atualizarNomeRefeicaoUsuarioService(refeicaoPatchNomeDto);
+		return res.status(200).json(result);
+	} catch (error: any) {
+		return res.status(error.statusCode).json({ message: error.message });
 	}
 });
 
 router.delete('/remover', async (req: Request, res: Response) => {
-	const refeicaoGetDeleteDto: RefeicaoGetDeleteDto = req.body
-	const result = await refeicaoUsuarioRemoverService(refeicaoGetDeleteDto);
-	if (result) {
-		return res.status(204).json(result);
-	} else {
-		return res.status(404).json({ message: 'refeicao não encontrado' });
+	try {
+		const refeicaoGetDeleteDto: RefeicaoGetDeleteDto = req.body
+		await refeicaoUsuarioRemoverService(refeicaoGetDeleteDto);
+		return res.status(204).json();
+	} catch (error: any) {
+		return res.status(error.statusCode).json({ message: error.message });
 	}
 });
 
 router.post('/adicionar/alimento', async (req: Request, res: Response) => {
-	const refeicaoAlimentoPostDeleteDto: RefeicaoAlimentoPostDto = req.body;
-	const result = await refeicaoUsuarioAdicionarAlimentoService(refeicaoAlimentoPostDeleteDto);
-	if (result) {
+	try {
+		const refeicaoAlimentoPostDeleteDto: RefeicaoAlimentoPostDto = req.body;
+		const result = await refeicaoUsuarioAdicionarAlimentoService(refeicaoAlimentoPostDeleteDto);
 		return res.status(201).json(result);
-	} else {
-		return res.status(404).json({ message: "erro" });
+	} catch (error: any) {
+		return res.status(error.statusCode).json({ message: error.message });
 	}
 });
 
 router.delete('/remover/alimento', async (req: Request, res: Response) => {
-	const refeicaoAlimentoDeleteDto: RefeicaoAlimentoDeleteDto = req.body
-	const result = await refeicaoUsuarioRemoverAlimentoService(refeicaoAlimentoDeleteDto);
-	if (result) {
-		return res.status(204).json(result);
-	} else {
-		return res.status(404).json({ message: 'erro' });
+	try {
+		const refeicaoAlimentoDeleteDto: RefeicaoAlimentoDeleteDto = req.body
+		await refeicaoUsuarioRemoverAlimentoService(refeicaoAlimentoDeleteDto);
+		return res.status(204).json();
+	} catch (error: any) {
+		return res.status(error.statusCode).json({ message: error.message });
 	}
 });
 export default router;

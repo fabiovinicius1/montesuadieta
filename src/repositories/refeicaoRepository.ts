@@ -11,6 +11,9 @@ export const buscarRefeicaoPeloIdRepository = async (RefeicaoGetDeleteDto: Refei
 	const result = await prisma.refeicaoUsuario.findFirst({
 		where: {
 			id
+		},
+		include:{
+			alimentosRefeicao:true
 		}
 	})
 	return result;
