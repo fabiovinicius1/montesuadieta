@@ -8,28 +8,32 @@ import { alimentoAppRemoverService } from '../services/alimentoApp/alimentoAppRe
 const router = Router();
 
 router.get('/pesquisar', async (req: Request, res: Response) => {
-	const alimentoAppGetDeleteDto: AlimentoAppGetDeleteDto = req.body;
-	const result = await alimentoAppPesquisarService(alimentoAppGetDeleteDto);
-	if (result) {
-		return res.status(200).json(alimentoAppGetDeleteDto);
-	} else {
-		return res.status(404).json({ message: "Alimento não encontrado" });
+	try {
+		const alimentoAppGetDeleteDto: AlimentoAppGetDeleteDto = req.body;
+		const result = await alimentoAppPesquisarService(alimentoAppGetDeleteDto);
+		return res.status(200).json(result);
+	} catch (error: any) {
+		return res.status(error.statusCode).json({ message: error.message });
 	}
 });
 
 router.post('/adicionar', async (req: Request, res: Response) => {
-	const alimentoAppPostPutDto: AlimentoAppPostPutDto = req.body;
-	const result = await alimentoAppAdicionarService(alimentoAppPostPutDto)
-	return res.status(201).json(result)
+	try {
+		const alimentoAppPostPutDto: AlimentoAppPostPutDto = req.body;
+		const result = await alimentoAppAdicionarService(alimentoAppPostPutDto)
+		return res.status(201).json(result)
+	} catch (error: any) {
+		return res.status(error.statusCode).json({ message: error.message });
+	}
 });
 
 router.delete('/remover', async (req: Request, res: Response) => {
-	const alimentoAppGetDeleteDto: AlimentoAppGetDeleteDto = req.body;
-	const result = await alimentoAppRemoverService(alimentoAppGetDeleteDto);
-	if (result) {
-		return res.status(204).json(alimentoAppGetDeleteDto);
-	} else {
-		return res.status(404).json({ message: "Alimento não encontrado" });
+	try {
+		const alimentoAppGetDeleteDto: AlimentoAppGetDeleteDto = req.body;
+		await alimentoAppRemoverService(alimentoAppGetDeleteDto);
+		return res.status(204).json();
+	} catch (error: any) {
+		return res.status(error.statusCode).json({ message: error.message });
 	}
 });
 
