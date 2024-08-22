@@ -42,8 +42,8 @@ router.patch('/atualizar/peso', async (req: Request, res: Response) => {
 router.delete('/remover', async (req: Request, res: Response) => {
 	try {
 		const usuarioGetDeleteRequestDTO: UsuarioGetDeleteRequestDTO = req.body;
-		const result = await usuarioRemoverService(usuarioGetDeleteRequestDTO);
-		return res.status(204).json(result);
+		await usuarioRemoverService(usuarioGetDeleteRequestDTO);
+		return res.status(204).json();
 	} catch (error: any) {
 		return res.status(error.statusCode).json({ message: error.message });
 	}
