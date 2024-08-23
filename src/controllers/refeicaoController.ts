@@ -53,7 +53,7 @@ router.delete('/remover', async (req: Request, res: Response) => {
 	}
 });
 
-router.post('/adicionar/alimento', async (req: Request, res: Response) => {
+router.post('/adicionar/alimentoApp', async (req: Request, res: Response) => {
 	try {
 		const refeicaoAlimentoPostDeleteDto: RefeicaoAlimentoPostDto = req.body;
 		const result = await refeicaoUsuarioAdicionarAlimentoService(refeicaoAlimentoPostDeleteDto);
