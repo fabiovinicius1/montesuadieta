@@ -13,4 +13,6 @@ app.use('/refeicoes', refeicaoController);
 
 app.listen(port, () => {
 	console.log(`Servidor rodando em http://localhost:${port}`);
+	console.log(`The connection URL is ${process.env.DATABASE_URL}`)
 });
+export default app;
