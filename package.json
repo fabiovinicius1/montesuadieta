@@ -5,9 +5,10 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/server.js",
-    "dev": "ts-node-dev src/server.ts",
+    "dev": "dotenv -e .env -- ts-node-dev src/server.ts",
     "migrate:teste": "dotenv -e .env.test.local -- npx prisma migrate deploy",
-    "test": "dotenv -e .env.test.local -- vitest"
+	"migrate:dev": "dotenv -e .env -- npx prisma migrate deploy",
+    "test": "dotenv -e .env.test.local -- npx vitest"
   },
   "keywords": [],
   "author": "",
