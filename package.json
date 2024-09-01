@@ -3,12 +3,14 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
+	"build": "tsc",
+	"backup:testdb": "cp prisma/teste.db prisma/teste.db.bak",
+	"restore:testdb": "cp prisma/teste.db.bak prisma/teste.db",
     "start": "node dist/server.js",
     "dev": "dotenv -e .env -- ts-node-dev src/server.ts",
-    "migrate:teste": "dotenv -e .env.test.local -- npx prisma migrate deploy",
 	"migrate:dev": "dotenv -e .env -- npx prisma migrate deploy",
-    "test": "dotenv -e .env.test.local -- npx vitest"
+    "teste": "dotenv -e .env.test.local -- npx vitest && npm run restore:testdb",
+    "migrate:teste": "dotenv -e .env.test.local -- npx prisma migrate deploy && npm run backup:testdb"
   },
   "keywords": [],
   "author": "",
