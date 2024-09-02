@@ -43,14 +43,14 @@ model alimentosUsuario {
     monoinsaturados     Float
     poliinsaturados     Float
     gordutaTotal        Float
-    usuario             usuarios @relation(fields: [usuarioId], references: [id])
+    usuario             usuarios @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
     usuarioId           Int
 }
 
 model refeicaoUsuario {
     id                Int                 @id @default(autoincrement())
     nomeRefeicao      String
-    usuario           usuarios            @relation(fields: [usuarioId], references: [id])
+    usuario           usuarios            @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
     usuarioId         Int
     alimentosRefeicao alimentosRefeicao[]
 }
@@ -66,6 +66,6 @@ model alimentosRefeicao {
     monoinsaturados      Float
     poliinsaturados      Float
     gordutaTotal         Float
-    refeicao             refeicaoUsuario @relation(fields: [refeicaoId], references: [id])
+    refeicao             refeicaoUsuario @relation(fields: [refeicaoId], references: [id], onDelete: Cascade)
     refeicaoId           Int
 }

@@ -37,15 +37,6 @@ export const removerAlimentoRefeicaoRepository = async (refeicaoAlimentoDeleteDt
 	return result;
 };
 
-export const removerTodosAlimentosRefeicaoRepository = async (refeicaoId: number): Promise<Prisma.BatchPayload> => {
-	const result = await prisma.alimentosRefeicao.deleteMany({
-		where: {
-			refeicaoId
-		}
-	})
-	return result;
-};
-
 export const pesquisarAlimentoRefeicaoRepository = async (refeicaoAlimentoDeleteDto: RefeicaoAlimentoDeleteDto): Promise<AlimentoRefeicao | null> => {
 	const id = refeicaoAlimentoDeleteDto.id
 	const result = await prisma.alimentosRefeicao.findFirst({
