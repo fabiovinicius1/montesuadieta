@@ -63,7 +63,7 @@ router.post('/adicionar/alimentoApp', async (req: Request, res: Response) => {
 	}
 });
 
-router.delete('/remover/alimento', async (req: Request, res: Response) => {
+router.delete('/remover/alimentoApp', async (req: Request, res: Response) => {
 	try {
 		const refeicaoAlimentoDeleteDto: RefeicaoAlimentoDeleteDto = req.body
 		await refeicaoUsuarioRemoverAlimentoService(refeicaoAlimentoDeleteDto);
