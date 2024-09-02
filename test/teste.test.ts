@@ -7,6 +7,8 @@ import { PrismaClient } from '@prisma/client';
 import { UsuarioPesoPatchRequestDTO } from '../src/dto/usuarioDto/usuarioPesoPatchRequestDTO';
 import { AlimentoAppPostPutDto } from '../src/dto/alimentoAppDto/alimentoAppPostPutDto';
 import { AlimentoAppGetDeleteDto } from '../src/dto/alimentoAppDto/alimentoAppGetDeleteDto';
+import { RefeicaoGetDeleteDto } from '../src/dto/refeicaoDto/refeicaoGetDeleteDto';
+import { RefeicaoPostPutDto } from '../src/dto/refeicaoDto/refeicaoPostPutDto';
 
 const prisma = new PrismaClient();
 beforeAll(async () => {
@@ -14,6 +16,10 @@ beforeAll(async () => {
 		'login': 'fabio',
 		'peso': 72,
 		'senha': '123'
+	}
+	const refeicaoPostPutDto: RefeicaoPostPutDto = {
+		'nomeRefeicao': 'Almoço',
+		'usuarioId': 1
 	}
 	await prisma.usuarios.create({
 		data: {
@@ -196,3 +202,141 @@ describe('DELETE /alimentosApp/remover', () => {
 		expect(response.body).toEqual({});
 	});
 });
+
+// describe('GET /refeicoes/pesquisar', () => {
+// 	it('Pesquisa uma refeição que não existe', async () => {
+// 		const refeicaoGetDeleteDto: RefeicaoGetDeleteDto = {
+// 			'id': 2
+// 		}
+// 		const response = await request(app).get('/refeicoes/pesquisar').send(refeicaoGetDeleteDto);
+
+// 		expect(response.status).toBe(404);
+// 		expect(response.body).toEqual({ message: 'Refeição não existe!' });
+// 	});
+// 	it('Pesquisa uma refeição que existe', async () => {
+// 		const refeicaoGetDeleteDto: RefeicaoGetDeleteDto = {
+// 			'id': 1
+// 		}
+// 		const response = await request(app).get('/refeicoes/pesquisar').send(refeicaoGetDeleteDto);
+
+// 		expect(response.status).toBe(200);
+// 		expect(response.body).toHaveProperty('nomeRefeicao', 'Almoço');
+// 	});
+// });
+
+// describe('PATCH /refeicoes/atualizar/contato', () => {
+// 	it('Atualiza o peso de um usuário que não existe', async () => {
+// 		const usuarioPesoPatchRequestDTO: UsuarioPesoPatchRequestDTO = {
+// 			'id': 2,
+// 			'peso': 100
+// 		}
+// 		const response = await request(app).patch('/refeicoes/atualizar/nome').send(usuarioPesoPatchRequestDTO);
+
+// 		expect(response.status).toBe(404);
+// 		expect(response.body).toEqual({ message: 'Usuário não existe!' });
+// 	});
+// 	it('Atualiza o peso de um usuário que existe', async () => {
+// 		const usuarioPesoPatchRequestDTO: UsuarioPesoPatchRequestDTO = {
+// 			'id': 1,
+// 			'peso': 100
+// 		}
+// 		const response = await request(app).patch('/refeicoes/atualizar/peso').send(usuarioPesoPatchRequestDTO);
+
+// 		expect(response.status).toBe(200);
+// 		expect(response.body).toHaveProperty('peso', 100);
+// 	});
+// });
+
+// describe('POST /refeicoes/adicionar', () => {
+// 	it('Adiciona uma usuário', async () => {
+// 		const usuarioPostPutRequestDTO: UsuarioPostPutRequestDTO = {
+// 			'login': 'vinicius',
+// 			'peso': 50,
+// 			'senha': "456"
+// 		}
+// 		const response = await request(app).post('/refeicoes/adicionar').send(usuarioPostPutRequestDTO);
+
+// 		expect(response.status).toBe(201);
+// 		expect(response.body).toHaveProperty('id');
+// 		expect(response.body).toHaveProperty('login', 'vinicius');
+// 	});
+// 	it('Adiciona uma usuário com login já existente', async () => {
+// 		const usuarioPostPutRequestDTO: UsuarioPostPutRequestDTO = {
+// 			'login': 'vinicius',
+// 			'peso': 70,
+// 			'senha': "789"
+// 		}
+// 		const response = await request(app).post('/refeicoes/adicionar').send(usuarioPostPutRequestDTO);
+
+// 		expect(response.status).toBe(404);
+// 		expect(response.body).toEqual({ message: 'Login já existe!' });
+// 	});
+// });
+
+// describe('DELETE /refeicoes/remover', () => {
+// 	it('Remove um usuário que não existe', async () => {
+// 		const usuarioGetDeleteRequestDTO: UsuarioGetDeleteRequestDTO = {
+// 			'id': 100
+// 		}
+// 		const response = await request(app).delete('/refeicoes/remover').send(usuarioGetDeleteRequestDTO);
+
+// 		expect(response.status).toBe(404);
+// 		expect(response.body).toEqual({ message: 'Usuário não existe!' });
+// 	});
+// 	it('Remove um usuário que existe', async () => {
+// 		const usuarioGetDeleteRequestDTO: UsuarioGetDeleteRequestDTO = {
+// 			'id': 1
+// 		}
+// 		const response = await request(app).delete('/refeicoes/remover').send(usuarioGetDeleteRequestDTO);
+
+// 		expect(response.status).toBe(204);
+// 		expect(response.body).toEqual({});
+// 	});
+// });
+
+// describe('POST /refeicoes/adicionar/alimentoApp', () => {
+// 	it('Adiciona uma usuário', async () => {
+// 		const usuarioPostPutRequestDTO: UsuarioPostPutRequestDTO = {
+// 			'login': 'vinicius',
+// 			'peso': 50,
+// 			'senha': "456"
+// 		}
+// 		const response = await request(app).post('/refeicoes/adicionar/alimentoApp').send(usuarioPostPutRequestDTO);
+
+// 		expect(response.status).toBe(201);
+// 		expect(response.body).toHaveProperty('id');
+// 		expect(response.body).toHaveProperty('login', 'vinicius');
+// 	});
+// 	it('Adiciona uma usuário com login já existente', async () => {
+// 		const usuarioPostPutRequestDTO: UsuarioPostPutRequestDTO = {
+// 			'login': 'vinicius',
+// 			'peso': 70,
+// 			'senha': "789"
+// 		}
+// 		const response = await request(app).post('/refeicoes/adicionar/alimentoApp').send(usuarioPostPutRequestDTO);
+
+// 		expect(response.status).toBe(404);
+// 		expect(response.body).toEqual({ message: 'Login já existe!' });
+// 	});
+// });
+
+// describe('DELETE /refeicoes/remover/alimentoApp', () => {
+// 	it('Remove um usuário que não existe', async () => {
+// 		const usuarioGetDeleteRequestDTO: UsuarioGetDeleteRequestDTO = {
+// 			'id': 100
+// 		}
+// 		const response = await request(app).delete('/refeicoes/remover/alimentoApp').send(usuarioGetDeleteRequestDTO);
+
+// 		expect(response.status).toBe(404);
+// 		expect(response.body).toEqual({ message: 'Usuário não existe!' });
+// 	});
+// 	it('Remove um usuário que existe', async () => {
+// 		const usuarioGetDeleteRequestDTO: UsuarioGetDeleteRequestDTO = {
+// 			'id': 1
+// 		}
+// 		const response = await request(app).delete('/refeicoes/remover/alimentoApp').send(usuarioGetDeleteRequestDTO);
+
+// 		expect(response.status).toBe(204);
+// 		expect(response.body).toEqual({});
+// 	});
+// });
