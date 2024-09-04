@@ -392,9 +392,16 @@ describe('DELETE /refeicoes/remover/alimentoApp', () => {
 
 describe('POST /auth/login/usuario', () => {
 	it('Login realizado com sucesso', async () => {
+		const usuarioPostPutRequestDTO: UsuarioPostPutRequestDTO = {
+			'login': 'siqueira',
+			'peso': 50,
+			'senha': "909"
+		}
+		await request(app).post('/usuarios/adicionar').send(usuarioPostPutRequestDTO);
+
 		const usuarioLoginPostRequestDTO: UsuarioLoginPostRequestDTO = {
-			'login': 'fernandes',
-			'senha': '789'
+			'login': 'siqueira',
+			'senha': "909"
 		}
 		const response = await request(app).post('/auth/login/usuario').send(usuarioLoginPostRequestDTO);
 
@@ -402,8 +409,8 @@ describe('POST /auth/login/usuario', () => {
 	});
 	it('Login passado incorreto', async () => {
 		const usuarioLoginPostRequestDTO: UsuarioLoginPostRequestDTO = {
-			'login': 'fernande',
-			'senha': '789'
+			'login': 'siqueir',
+			'senha': '909'
 		}
 		const response = await request(app).post('/auth/login/usuario').send(usuarioLoginPostRequestDTO);
 		expect(response.status).toBe(401);
@@ -411,8 +418,8 @@ describe('POST /auth/login/usuario', () => {
 	});
 	it('Senha passado incorreto', async () => {
 		const usuarioLoginPostRequestDTO: UsuarioLoginPostRequestDTO = {
-			'login': 'fernandes',
-			'senha': '78'
+			'login': 'siqueira',
+			'senha': '90'
 		}
 		const response = await request(app).post('/auth/login/usuario').send(usuarioLoginPostRequestDTO);
 
