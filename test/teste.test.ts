@@ -12,6 +12,7 @@ import { RefeicaoPostPutDto } from '../src/dto/refeicaoDto/refeicaoPostPutDto';
 import { RefeicaoPatchNomeDto } from '../src/dto/refeicaoDto/refeicaoPatchNomeDto';
 import { RefeicaoAlimentoPostDto } from '../src/dto/refeicaoDto/refeicaoAlimentoPostDto';
 import { RefeicaoAlimentoDeleteDto } from '../src/dto/refeicaoDto/RefeicaoAlimentoDeleteDto';
+import { UsuarioLoginPostRequestDTO } from '../src/dto/usuarioDto/usuarioLoginPostRequestDTO';
 
 const prisma = new PrismaClient();
 beforeAll(async () => {
@@ -386,5 +387,36 @@ describe('DELETE /refeicoes/remover/alimentoApp', () => {
 
 		expect(response.status).toBe(204);
 		expect(response.body).toEqual({});
+	});
+});
+
+describe('POST /auth/login/usuario', () => {
+	it('Login realizado com sucesso', async () => {
+		const usuarioLoginPostRequestDTO: UsuarioLoginPostRequestDTO = {
+			'login': 'fernandes',
+			'senha': '789'
+		}
+		const response = await request(app).post('/auth/login/usuario').send(usuarioLoginPostRequestDTO);
+
+		expect(response.status).toBe(201);
+	});
+	it('Login passado incorreto', async () => {
+		const usuarioLoginPostRequestDTO: UsuarioLoginPostRequestDTO = {
+			'login': 'fernande',
+			'senha': '789'
+		}
+		const response = await request(app).post('/auth/login/usuario').send(usuarioLoginPostRequestDTO);
+		expect(response.status).toBe(401);
+		expect(response.body).toEqual({ message: 'Login ou senha incorretos!' });
+	});
+	it('Senha passado incorreto', async () => {
+		const usuarioLoginPostRequestDTO: UsuarioLoginPostRequestDTO = {
+			'login': 'fernandes',
+			'senha': '78'
+		}
+		const response = await request(app).post('/auth/login/usuario').send(usuarioLoginPostRequestDTO);
+
+		expect(response.status).toBe(401);
+		expect(response.body).toEqual({ message: 'Login ou senha incorretos!' });
 	});
 });
