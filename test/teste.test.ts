@@ -13,6 +13,7 @@ import { RefeicaoPatchNomeDto } from '../src/dto/refeicaoDto/refeicaoPatchNomeDt
 import { RefeicaoAlimentoPostDto } from '../src/dto/refeicaoDto/refeicaoAlimentoPostDto';
 import { RefeicaoAlimentoDeleteDto } from '../src/dto/refeicaoDto/RefeicaoAlimentoDeleteDto';
 import { UsuarioLoginPostRequestDTO } from '../src/dto/usuarioDto/usuarioLoginPostRequestDTO';
+import Jwt from 'jsonwebtoken';
 
 const prisma = new PrismaClient();
 beforeAll(async () => {
@@ -406,6 +407,8 @@ describe('POST /auth/login/usuario', () => {
 		const response = await request(app).post('/auth/login/usuario').send(usuarioLoginPostRequestDTO);
 
 		expect(response.status).toBe(201);
+		const decoded = Jwt.verify(response.body, process.env.SECRET!);
+        expect(decoded).toEqual('siqueira');
 	});
 	it('Login passado incorreto', async () => {
 		const usuarioLoginPostRequestDTO: UsuarioLoginPostRequestDTO = {
