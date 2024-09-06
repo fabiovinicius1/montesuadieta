@@ -10,14 +10,13 @@ import usuarioController from '../src/controllers/usuarioController';
 import { AlimentoAppGetDeleteDto } from '../src/dto/alimentoAppDto/alimentoAppGetDeleteDto';
 
 const app = express();
-const PORT = 3002
 app.use(express.json());
 app.use('/usuarios', usuarioController);
 app.use('/alimentosApp', alimentoAppController);
 app.use('/refeicoes', refeicaoController);
 app.use('/auth', authController);
-const server = app.listen(PORT, () => {
-	console.log(`Servidor rodando em http://localhost:${PORT}`);
+const server = app.listen(process.env.PORT, () => {
+	console.log(`Servidor rodando em http://localhost:${process.env.PORT}`);
 	console.log(`url = env(${process.env.DATABASE_URL})`)
 });
 
