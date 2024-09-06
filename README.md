@@ -8,10 +8,12 @@ A documentação da API pode ser encontrada no [SwaggerHub](https://app.swaggerh
 ## Configuração inicial
 - Crie um arquivo **.env** com as seguinte variáveis: 
   - **DATABASE_URL = file:./dev.db**
-  - **SECRET** = <chave_secreta>
+  - **SECRET** = suaChaveSecretaSuperSegura123!@#
+  - **PORT** = 3000
 - Crie um arquivo **.env.test.local** com as seguinte variáveis: 
   - **DATABASE_URL = file:./teste.db**
-  - **SECRET** = <chave_secreta>
+  - **SECRET** = suaChaveSecretaSuperSegura123!@#
+  - **PORT** = 3001
 
 ## Rodando a aplicação
 - npm run migrate:dev
