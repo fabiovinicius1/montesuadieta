@@ -4,13 +4,11 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "backup:testdb": "cp prisma/teste.db prisma/teste.db.bak",
-    "restore:testdb": "cp prisma/teste.db.bak prisma/teste.db",
     "start": "node dist/server.js",
     "dev": "dotenv -e .env -- ts-node-dev src/server.ts",
     "migrate:dev": "dotenv -e .env -- prisma migrate deploy",
-    "teste": "dotenv -e .env.test.local -- jest --detectOpenHandles && npm run restore:testdb",
-    "migrate:teste": "dotenv -e .env.test.local -- prisma migrate deploy && npm run backup:testdb"
+    "teste": "dotenv -e .env.test.local -- jest --detectOpenHandles",
+    "migrate:teste": "dotenv -e .env.test.local -- prisma migrate deploy"
   },
   "keywords": [],
   "author": "",
