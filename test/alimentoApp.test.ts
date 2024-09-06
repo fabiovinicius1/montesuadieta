@@ -2,7 +2,6 @@ import express from 'express';
 import request from 'supertest';
 import { PrismaClient } from '@prisma/client';
 import { AlimentoAppPostPutDto } from '../src/dto/alimentoAppDto/alimentoAppPostPutDto';
-import { RefeicaoPostPutDto } from '../src/dto/refeicaoDto/refeicaoPostPutDto';
 import alimentoAppController from '../src/controllers/alimentoAppController';
 import authController from '../src/controllers/authController';
 import refeicaoController from '../src/controllers/refeicaoController';

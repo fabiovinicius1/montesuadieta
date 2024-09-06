@@ -1,11 +1,8 @@
 import express from 'express';
 import request from 'supertest';
-import { UsuarioGetDeleteRequestDTO } from '../src/dto/usuarioDto/usuarioGetDeleteRequestDTO';
 import { UsuarioPostPutRequestDTO } from '../src/dto/usuarioDto/usuarioPostPutRequestDTO';
 import { PrismaClient } from '@prisma/client';
-import { UsuarioPesoPatchRequestDTO } from '../src/dto/usuarioDto/usuarioPesoPatchRequestDTO';
 import { AlimentoAppPostPutDto } from '../src/dto/alimentoAppDto/alimentoAppPostPutDto';
-import { AlimentoAppGetDeleteDto } from '../src/dto/alimentoAppDto/alimentoAppGetDeleteDto';
 import { RefeicaoGetDeleteDto } from '../src/dto/refeicaoDto/refeicaoGetDeleteDto';
 import { RefeicaoPostPutDto } from '../src/dto/refeicaoDto/refeicaoPostPutDto';
 import { RefeicaoPatchNomeDto } from '../src/dto/refeicaoDto/refeicaoPatchNomeDto';
