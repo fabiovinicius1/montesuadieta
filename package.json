@@ -8,9 +8,9 @@
     "restore:testdb": "cp prisma/teste.db.bak prisma/teste.db",
     "start": "node dist/server.js",
     "dev": "dotenv -e .env -- ts-node-dev src/server.ts",
-    "migrate:dev": "dotenv -e .env -- npx prisma migrate deploy",
-    "teste": "dotenv -e .env.test.local -- npx vitest && npm run restore:testdb",
-    "migrate:teste": "dotenv -e .env.test.local -- npx prisma migrate deploy && npm run backup:testdb"
+    "migrate:dev": "dotenv -e .env -- prisma migrate deploy",
+    "teste": "dotenv -e .env.test.local -- jest --detectOpenHandles && npm run restore:testdb",
+    "migrate:teste": "dotenv -e .env.test.local -- prisma migrate deploy && npm run backup:testdb"
   },
   "keywords": [],
   "author": "",
@@ -25,13 +25,18 @@
     "ts-node-dev": "^2.0.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.25.2",
+    "@babel/preset-env": "^7.25.4",
+    "@babel/preset-typescript": "^7.24.7",
     "@types/bcrypt": "^5.0.2",
     "@types/express": "^4.17.21",
+    "@types/jest": "^29.5.12",
     "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^20.14.11",
     "@types/supertest": "^6.0.2",
     "@typescript-eslint/eslint-plugin": "^7.16.1",
     "@typescript-eslint/parser": "^7.16.1",
+    "babel-jest": "^29.7.0",
     "dotenv-cli": "^7.4.2",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
@@ -40,11 +45,11 @@
     "gulp-nodemon": "^2.5.0",
     "gulp-tslint": "^8.1.4",
     "gulp-typescript": "^6.0.0-alpha.1",
+    "jest": "^29.7.0",
     "prettier": "^3.3.3",
     "prisma": "^5.17.0",
     "supertest": "^7.0.0",
     "ts-node": "^10.9.2",
-    "typescript": "^5.5.3",
-    "vitest": "^2.0.5"
+    "typescript": "^5.5.3"
   }
 }
