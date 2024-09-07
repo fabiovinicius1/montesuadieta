@@ -14,4 +14,5 @@ const server = app.listen(process.env.PORT, () => {
 	console.log(`Servidor rodando em http://localhost:${process.env.PORT}`);
 	console.log(`url = env(${process.env.DATABASE_URL})`)
 });
-export default app;
+
+export { app, server };

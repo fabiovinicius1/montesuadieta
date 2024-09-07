@@ -1,24 +1,9 @@
-import express from 'express';
 import request from 'supertest';
 import { UsuarioGetDeleteRequestDTO } from '../src/dto/usuarioDto/usuarioGetDeleteRequestDTO';
 import { UsuarioPostPutRequestDTO } from '../src/dto/usuarioDto/usuarioPostPutRequestDTO';
 import { PrismaClient } from '@prisma/client';
 import { UsuarioPesoPatchRequestDTO } from '../src/dto/usuarioDto/usuarioPesoPatchRequestDTO';
-import alimentoAppController from '../src/controllers/alimentoAppController';
-import authController from '../src/controllers/authController';
-import refeicaoController from '../src/controllers/refeicaoController';
-import usuarioController from '../src/controllers/usuarioController';
-
-const app = express();
-app.use(express.json());
-app.use('/usuarios', usuarioController);
-app.use('/alimentosApp', alimentoAppController);
-app.use('/refeicoes', refeicaoController);
-app.use('/auth', authController);
-const server = app.listen(process.env.PORT, () => {
-	console.log(`Servidor rodando em http://localhost:${process.env.PORT}`);
-	console.log(`url = env(${process.env.DATABASE_URL})`)
-});
+import { app, server } from '../src/server';
 
 const prisma = new PrismaClient();
 
