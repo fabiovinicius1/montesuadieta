@@ -10,10 +10,11 @@ import { RefeicaoAlimentoPostDto } from '../dto/refeicaoDto/refeicaoAlimentoPost
 import { refeicaoUsuarioAdicionarAlimentoService } from '../services/refeicao/refeicaoUsuarioAdicionarAlimentoService';
 import { refeicaoUsuarioRemoverAlimentoService } from '../services/refeicao/refeicaoUsuarioRemoverAlimentoService';
 import { RefeicaoAlimentoDeleteDto } from '../dto/refeicaoDto/RefeicaoAlimentoDeleteDto';
+import { autenticarToken } from '../middleware/autenticarToken';
 
 const router = Router();
 
-router.get('/pesquisar', async (req: Request, res: Response) => {
+router.get('/pesquisar', autenticarToken,  async (req: Request, res: Response) => {
 	try {
 		const refeicaoGetDeleteDto: RefeicaoGetDeleteDto = req.body;
 		const result = await refeicaoUsuarioPesquisarService(refeicaoGetDeleteDto);
@@ -23,7 +24,7 @@ router.get('/pesquisar', async (req: Request, res: Response) => {
 	}
 });
 
-router.post('/adicionar', async (req: Request, res: Response) => {
+router.post('/adicionar', autenticarToken,  async (req: Request, res: Response) => {
 	try {
 		const refeicaoPostPutDto: RefeicaoPostPutDto = req.body;
 		const result = await refeicaoUsuarioAdicionarService(refeicaoPostPutDto);
@@ -33,7 +34,7 @@ router.post('/adicionar', async (req: Request, res: Response) => {
 	}
 });
 
-router.patch('/atualizar/nome', async (req: Request, res: Response) => {
+router.patch('/atualizar/nome', autenticarToken,  async (req: Request, res: Response) => {
 	try {
 		const refeicaoPatchNomeDto: RefeicaoPatchNomeDto = req.body;
 		const result = await atualizarNomeRefeicaoUsuarioService(refeicaoPatchNomeDto);
@@ -43,7 +44,7 @@ router.patch('/atualizar/nome', async (req: Request, res: Response) => {
 	}
 });
 
-router.delete('/remover', async (req: Request, res: Response) => {
+router.delete('/remover', autenticarToken,  async (req: Request, res: Response) => {
 	try {
 		const refeicaoGetDeleteDto: RefeicaoGetDeleteDto = req.body
 		await refeicaoUsuarioRemoverService(refeicaoGetDeleteDto);
@@ -53,7 +54,7 @@ router.delete('/remover', async (req: Request, res: Response) => {
 	}
 });
 
-router.post('/adicionar/alimentoApp', async (req: Request, res: Response) => {
+router.post('/adicionar/alimentoApp', autenticarToken,  async (req: Request, res: Response) => {
 	try {
 		const refeicaoAlimentoPostDeleteDto: RefeicaoAlimentoPostDto = req.body;
 		const result = await refeicaoUsuarioAdicionarAlimentoService(refeicaoAlimentoPostDeleteDto);
@@ -63,7 +64,7 @@ router.post('/adicionar/alimentoApp', async (req: Request, res: Response) => {
 	}
 });
 
-router.delete('/remover/alimentoApp', async (req: Request, res: Response) => {
+router.delete('/remover/alimentoApp', autenticarToken,  async (req: Request, res: Response) => {
 	try {
 		const refeicaoAlimentoDeleteDto: RefeicaoAlimentoDeleteDto = req.body
 		await refeicaoUsuarioRemoverAlimentoService(refeicaoAlimentoDeleteDto);

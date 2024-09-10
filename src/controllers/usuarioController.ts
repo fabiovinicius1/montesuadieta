@@ -6,10 +6,11 @@ import { UsuarioGetDeleteRequestDTO } from '../dto/usuarioDto/usuarioGetDeleteRe
 import { UsuarioPesoPatchRequestDTO } from '../dto/usuarioDto/usuarioPesoPatchRequestDTO';
 import { UsuarioPostPutRequestDTO } from '../dto/usuarioDto/usuarioPostPutRequestDTO';
 import { usuarioRemoverService } from '../services/usuario/usuarioRemoverService';
+import { autenticarToken } from '../middleware/autenticarToken';
 
 const router = Router();
 
-router.get('/pesquisar', async (req: Request, res: Response) => {
+router.get('/pesquisar', autenticarToken,  async (req: Request, res: Response) => {
 	try {
 		const usuarioGetDeleteRequestDTO: UsuarioGetDeleteRequestDTO = req.body;
 		const result = await pesquisarUsuarioService(usuarioGetDeleteRequestDTO);
@@ -29,7 +30,7 @@ router.post('/adicionar', async (req: Request, res: Response) => {
 	}
 });
 
-router.patch('/atualizar/peso', async (req: Request, res: Response) => {
+router.patch('/atualizar/peso', autenticarToken, async (req: Request, res: Response) => {
 	try {
 		const usuarioPesoPatchDTO: UsuarioPesoPatchRequestDTO = req.body;
 		const result = await atualizarPesoUsuarioService(usuarioPesoPatchDTO);
@@ -39,7 +40,7 @@ router.patch('/atualizar/peso', async (req: Request, res: Response) => {
 	}
 });
 
-router.delete('/remover', async (req: Request, res: Response) => {
+router.delete('/remover', autenticarToken,  async (req: Request, res: Response) => {
 	try {
 		const usuarioGetDeleteRequestDTO: UsuarioGetDeleteRequestDTO = req.body;
 		await usuarioRemoverService(usuarioGetDeleteRequestDTO);
