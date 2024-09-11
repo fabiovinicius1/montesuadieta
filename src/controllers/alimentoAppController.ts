@@ -4,6 +4,7 @@ import { alimentoAppPesquisarService } from '../services/alimentoApp/alimentoApp
 import { AlimentoAppPostPutDto } from '../dto/alimentoAppDto/alimentoAppPostPutDto';
 import { alimentoAppAdicionarService } from '../services/alimentoApp/alimentoAppAdicionarService';
 import { alimentoAppRemoverService } from '../services/alimentoApp/alimentoAppRemoverService';
+import { autenticarToken } from '../middleware/autenticarToken';
 
 const router = Router();
 
@@ -17,7 +18,7 @@ router.get('/pesquisar', async (req: Request, res: Response) => {
 	}
 });
 
-router.post('/adicionar', async (req: Request, res: Response) => {
+router.post('/adicionar', autenticarToken,   async (req: Request, res: Response) => {
 	try {
 		const alimentoAppPostPutDto: AlimentoAppPostPutDto = req.body;
 		const result = await alimentoAppAdicionarService(alimentoAppPostPutDto)
@@ -27,7 +28,7 @@ router.post('/adicionar', async (req: Request, res: Response) => {
 	}
 });
 
-router.delete('/remover', async (req: Request, res: Response) => {
+router.delete('/remover', autenticarToken,   async (req: Request, res: Response) => {
 	try {
 		const alimentoAppGetDeleteDto: AlimentoAppGetDeleteDto = req.body;
 		await alimentoAppRemoverService(alimentoAppGetDeleteDto);

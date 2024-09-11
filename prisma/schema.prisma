@@ -69,3 +69,9 @@ model alimentosRefeicao {
     refeicao             refeicaoUsuario @relation(fields: [refeicaoId], references: [id], onDelete: Cascade)
     refeicaoId           Int
 }
+
+model admin {
+    id        Int                @id @default(autoincrement())
+    login     String             @unique
+    senha     String
+}
