@@ -4,8 +4,10 @@ import { UsuarioPostPutRequestDTO } from '../src/dto/usuarioDto/usuarioPostPutRe
 import { PrismaClient } from '@prisma/client';
 import { UsuarioPesoPatchRequestDTO } from '../src/dto/usuarioDto/usuarioPesoPatchRequestDTO';
 import { app, server } from '../src/server';
+import { UsuarioLoginPostRequestDTO } from '../src/dto/usuarioDto/usuarioLoginPostRequestDTO';
 
 const prisma = new PrismaClient();
+let token:any;
 
 beforeAll(async () => {
 	prisma.$connect();
@@ -25,11 +27,13 @@ beforeEach(async () => {
 		'peso': 72,
 		'senha': '123'
 	};
-	await prisma.usuarios.create({
-		data: {
-			...usuarioPostPutRequestDTO
-		}
-	});
+	await request(app).post('/usuarios/adicionar').send(usuarioPostPutRequestDTO);
+	const usuarioLoginPostRequestDTO: UsuarioLoginPostRequestDTO = {
+		'login': 'fabio',
+		'senha': '123'
+	}
+	const response = await request(app).post('/auth/login/usuario').send(usuarioLoginPostRequestDTO);
+	token = response.body;
 });
 
 afterEach(async () => {
@@ -53,7 +57,7 @@ describe('GET /usuarios/pesquisar', () => {
 		const usuarioGetDeleteRequestDTO: UsuarioGetDeleteRequestDTO = {
 			'id': 100
 		}
-		const response = await request(app).get('/usuarios/pesquisar').send(usuarioGetDeleteRequestDTO);
+		const response = await request(app).get('/usuarios/pesquisar').send(usuarioGetDeleteRequestDTO).set('Authorization', `Bearer ${token}`);
 
 		expect(response.status).toBe(404);
 		expect(response.body).toEqual({ message: 'Usuário não existe!' });
@@ -62,7 +66,7 @@ describe('GET /usuarios/pesquisar', () => {
 		const usuarioGetDeleteRequestDTO: UsuarioGetDeleteRequestDTO = {
 			'id': 1
 		}
-		const response = await request(app).get('/usuarios/pesquisar').send(usuarioGetDeleteRequestDTO);
+		const response = await request(app).get('/usuarios/pesquisar').send(usuarioGetDeleteRequestDTO).set('Authorization', `Bearer ${token}`);
 
 		expect(response.status).toBe(200);
 		expect(response.body).toHaveProperty('login', 'fabio');
@@ -75,7 +79,7 @@ describe('PATCH /usuarios/atualizar/peso', () => {
 			'id': 100,
 			'peso': 100
 		}
-		const response = await request(app).patch('/usuarios/atualizar/peso').send(usuarioPesoPatchRequestDTO);
+		const response = await request(app).patch('/usuarios/atualizar/peso').send(usuarioPesoPatchRequestDTO).set('Authorization', `Bearer ${token}`);
 
 		expect(response.status).toBe(404);
 		expect(response.body).toEqual({ message: 'Usuário não existe!' });
@@ -85,7 +89,7 @@ describe('PATCH /usuarios/atualizar/peso', () => {
 			'id': 1,
 			'peso': 100
 		}
-		const response = await request(app).patch('/usuarios/atualizar/peso').send(usuarioPesoPatchRequestDTO);
+		const response = await request(app).patch('/usuarios/atualizar/peso').send(usuarioPesoPatchRequestDTO).set('Authorization', `Bearer ${token}`);
 
 		expect(response.status).toBe(200);
 		expect(response.body).toHaveProperty('peso', 100);
@@ -123,7 +127,7 @@ describe('DELETE /usuarios/remover', () => {
 		const usuarioGetDeleteRequestDTO: UsuarioGetDeleteRequestDTO = {
 			'id': 100
 		}
-		const response = await request(app).delete('/usuarios/remover').send(usuarioGetDeleteRequestDTO);
+		const response = await request(app).delete('/usuarios/remover').send(usuarioGetDeleteRequestDTO).set('Authorization', `Bearer ${token}`);
 
 		expect(response.status).toBe(404);
 		expect(response.body).toEqual({ message: 'Usuário não existe!' });
@@ -132,7 +136,7 @@ describe('DELETE /usuarios/remover', () => {
 		const usuarioGetDeleteRequestDTO: UsuarioGetDeleteRequestDTO = {
 			'id': 1
 		}
-		const response = await request(app).delete('/usuarios/remover').send(usuarioGetDeleteRequestDTO);
+		const response = await request(app).delete('/usuarios/remover').send(usuarioGetDeleteRequestDTO).set('Authorization', `Bearer ${token}`);
 
 		expect(response.status).toBe(204);
 		expect(response.body).toEqual({});
