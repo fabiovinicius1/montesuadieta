@@ -40,12 +40,12 @@ beforeEach(async () => {
 	});
 	const adminPostPutRequestDTO: AdminPostPutRequestDTO = {
 		'login': 'admin',
-		'senha': '123'
+		'senha': '123456'
 	};
 	await request(app).post('/admin/adicionar').send(adminPostPutRequestDTO);
 	const adminLoginPostRequestDTO: AdminLoginPostRequestDTO = {
 		'login': 'admin',
-		'senha': '123'
+		'senha': '123456'
 	}
 	const response = await request(app).post('/auth/login/admin').send(adminLoginPostRequestDTO);
 	token = response.body;

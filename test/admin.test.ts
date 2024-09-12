@@ -17,12 +17,12 @@ beforeEach(async () => {
 	await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='admin';`
 	const adminPostPutRequestDTO: AdminPostPutRequestDTO = {
 		'login': 'admin',
-		'senha': '123'
+		'senha': '123456'
 	};
 	await request(app).post('/admin/adicionar').send(adminPostPutRequestDTO);
 	const adminLoginPostRequestDTO: AdminLoginPostRequestDTO = {
 		'login': 'admin',
-		'senha': '123'
+		'senha': '123456'
 	}
 	const response = await request(app).post('/auth/login/admin').send(adminLoginPostRequestDTO);
 	token = response.body;
@@ -75,7 +75,7 @@ describe('POST /admin/adicionar', () => {
 	it('Adiciona uma admin com login já existente', async () => {
 		const adminPostPutRequestDTO: AdminPostPutRequestDTO = {
 			'login': 'admin',
-			'senha': '123'
+			'senha': '123456'
 		};
 		const response = await request(app).post('/admin/adicionar').send(adminPostPutRequestDTO);
 
