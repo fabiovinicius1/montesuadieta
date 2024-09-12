@@ -4,6 +4,8 @@ import { PrismaClient } from '@prisma/client';
 import { UsuarioLoginPostRequestDTO } from '../src/dto/usuarioDto/usuarioLoginPostRequestDTO';
 import Jwt from 'jsonwebtoken';
 import { app, server } from '../src/server';
+import { AdminPostPutRequestDTO } from '../src/dto/adminDto/AdminPostPutRequestDTO';
+import { AdminLoginPostRequestDTO } from '../src/dto/adminDto/AdminLoginPosRequestDTO';
 
 const prisma = new PrismaClient();
 beforeAll(async () => {
@@ -15,16 +17,24 @@ beforeEach(async () => {
 	await prisma.$executeRaw`DELETE FROM alimentosTabelaApp;`
 	await prisma.$executeRaw`DELETE FROM refeicaoUsuario;`
 	await prisma.$executeRaw`DELETE FROM alimentosRefeicao;`
+	await prisma.$executeRaw`DELETE FROM admin;`
 	await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='alimentosTabelaApp';`
 	await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='usuarios';`
 	await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='refeicaoUsuario';`
 	await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='alimentosRefeicao';`
+	await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='admin';`
 	const usuarioPostPutRequestDTO: UsuarioPostPutRequestDTO = {
 		'login': 'siqueira',
 		'peso': 72,
 		'senha': '789'
 	};
 	await request(app).post('/usuarios/adicionar').send(usuarioPostPutRequestDTO);
+
+	const adminPostPutRequestDTO: AdminPostPutRequestDTO = {
+		'login': 'admin',
+		'senha': '123'
+	};
+	await request(app).post('/admin/adicionar').send(adminPostPutRequestDTO);
 });
 
 afterEach(async () => {
@@ -32,10 +42,12 @@ afterEach(async () => {
 	await prisma.$executeRaw`DELETE FROM alimentosTabelaApp;`
 	await prisma.$executeRaw`DELETE FROM refeicaoUsuario;`
 	await prisma.$executeRaw`DELETE FROM alimentosRefeicao;`
+	await prisma.$executeRaw`DELETE FROM admin;`
 	await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='alimentosTabelaApp';`
 	await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='usuarios';`
 	await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='refeicaoUsuario';`
 	await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='alimentosRefeicao';`
+	await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='admin';`
 });
 
 afterAll(async () => {
@@ -70,6 +82,39 @@ describe('POST /auth/login/usuario', () => {
 			'senha': '123'
 		}
 		const response = await request(app).post('/auth/login/usuario').send(usuarioLoginPostRequestDTO);
+
+		expect(response.status).toBe(401);
+		expect(response.body).toEqual({ message: 'Login ou senha incorretos!' });
+	});
+});
+
+describe('POST /auth/login/admin', () => {
+	it('Login realizado com sucesso', async () => {
+		const adminLoginPostRequestDTO: AdminLoginPostRequestDTO = {
+			'login': 'admin',
+			'senha': '123'
+		}
+		const response = await request(app).post('/auth/login/admin').send(adminLoginPostRequestDTO);
+
+		expect(response.status).toBe(201);
+		const decoded = Jwt.verify(response.body, process.env.SECRET!);
+		expect(decoded).toEqual('admin');
+	});
+	it('Login passado incorreto', async () => {
+		const adminLoginPostRequestDTO: AdminLoginPostRequestDTO = {
+			'login': 'admi',
+			'senha': '123'
+		}
+		const response = await request(app).post('/auth/login/admin').send(adminLoginPostRequestDTO);
+		expect(response.status).toBe(401);
+		expect(response.body).toEqual({ message: 'Login ou senha incorretos!' });
+	});
+	it('Senha passado incorreto', async () => {
+		const adminLoginPostRequestDTO: AdminLoginPostRequestDTO = {
+			'login': 'admin',
+			'senha': '1235'
+		}
+		const response = await request(app).post('/auth/login/admin').send(adminLoginPostRequestDTO);
 
 		expect(response.status).toBe(401);
 		expect(response.body).toEqual({ message: 'Login ou senha incorretos!' });
