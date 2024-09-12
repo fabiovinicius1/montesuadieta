@@ -8,34 +8,22 @@ import { adminRemoverService } from '../services/admin/adminRemoverService';
 
 const router = Router();
 
-router.get('/pesquisar', autenticarToken,  async (req: Request, res: Response) => {
-	try {
-		const adminGetDeleteRequestDTO: AdminGetDeleteRequestDTO = req.body;
-		const result = await pesquisarAdminService(adminGetDeleteRequestDTO);
-		return res.status(200).json(result);
-	} catch (error: any) {
-		return res.status(error.statusCode).json({ message: error.message });
-	}
+router.get('/pesquisar', autenticarToken, async (req: Request, res: Response) => {
+	const adminGetDeleteRequestDTO: AdminGetDeleteRequestDTO = req.body;
+	const result = await pesquisarAdminService(adminGetDeleteRequestDTO);
+	return res.status(200).json(result);
 });
 
 router.post('/adicionar', async (req: Request, res: Response) => {
-	try {
-		const adminPostPutRequestDTO: AdminPostPutRequestDTO = req.body;
-		const result = await adicionarAdminService(adminPostPutRequestDTO);
-		return res.status(201).json(result);
-	} catch (error: any) {
-		return res.status(error.statusCode).json({ message: error.message });
-	}
+	const adminPostPutRequestDTO: AdminPostPutRequestDTO = req.body;
+	const result = await adicionarAdminService(adminPostPutRequestDTO);
+	return res.status(201).json(result);
 });
 
-router.delete('/remover', autenticarToken,  async (req: Request, res: Response) => {
-	try {
-		const adminGetDeleteRequestDTO: AdminGetDeleteRequestDTO = req.body;
-		await adminRemoverService(adminGetDeleteRequestDTO);
-		return res.status(204).json();
-	} catch (error: any) {
-		return res.status(error.statusCode).json({ message: error.message });
-	}
+router.delete('/remover', autenticarToken, async (req: Request, res: Response) => {
+	const adminGetDeleteRequestDTO: AdminGetDeleteRequestDTO = req.body;
+	await adminRemoverService(adminGetDeleteRequestDTO);
+	return res.status(204).json();
 });
 
 export default router;

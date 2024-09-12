@@ -10,44 +10,28 @@ import { autenticarToken } from '../middleware/autenticarToken';
 
 const router = Router();
 
-router.get('/pesquisar', autenticarToken,  async (req: Request, res: Response) => {
-	try {
-		const usuarioGetDeleteRequestDTO: UsuarioGetDeleteRequestDTO = req.body;
-		const result = await pesquisarUsuarioService(usuarioGetDeleteRequestDTO);
-		return res.status(200).json(result);
-	} catch (error: any) {
-		return res.status(error.statusCode).json({ message: error.message });
-	}
+router.get('/pesquisar', autenticarToken, async (req: Request, res: Response) => {
+	const usuarioGetDeleteRequestDTO: UsuarioGetDeleteRequestDTO = req.body;
+	const result = await pesquisarUsuarioService(usuarioGetDeleteRequestDTO);
+	return res.status(200).json(result);
 });
 
 router.post('/adicionar', async (req: Request, res: Response) => {
-	try {
-		const usuarioPostPutRequestDTO: UsuarioPostPutRequestDTO = req.body;
-		const result = await adicionarUsuarioService(usuarioPostPutRequestDTO);
-		return res.status(201).json(result);
-	} catch (error: any) {
-		return res.status(error.statusCode).json({ message: error.message });
-	}
+	const usuarioPostPutRequestDTO: UsuarioPostPutRequestDTO = req.body;
+	const result = await adicionarUsuarioService(usuarioPostPutRequestDTO);
+	return res.status(201).json(result);
 });
 
 router.patch('/atualizar/peso', autenticarToken, async (req: Request, res: Response) => {
-	try {
-		const usuarioPesoPatchDTO: UsuarioPesoPatchRequestDTO = req.body;
-		const result = await atualizarPesoUsuarioService(usuarioPesoPatchDTO);
-		return res.status(200).json(result);
-	} catch (error: any) {
-		return res.status(error.statusCode).json({ message: error.message });
-	}
+	const usuarioPesoPatchDTO: UsuarioPesoPatchRequestDTO = req.body;
+	const result = await atualizarPesoUsuarioService(usuarioPesoPatchDTO);
+	return res.status(200).json(result);
 });
 
-router.delete('/remover', autenticarToken,  async (req: Request, res: Response) => {
-	try {
-		const usuarioGetDeleteRequestDTO: UsuarioGetDeleteRequestDTO = req.body;
-		await usuarioRemoverService(usuarioGetDeleteRequestDTO);
-		return res.status(204).json();
-	} catch (error: any) {
-		return res.status(error.statusCode).json({ message: error.message });
-	}
+router.delete('/remover', autenticarToken, async (req: Request, res: Response) => {
+	const usuarioGetDeleteRequestDTO: UsuarioGetDeleteRequestDTO = req.body;
+	await usuarioRemoverService(usuarioGetDeleteRequestDTO);
+	return res.status(204).json();
 });
 
 export default router;

@@ -14,63 +14,44 @@ import { autenticarToken } from '../middleware/autenticarToken';
 
 const router = Router();
 
-router.get('/pesquisar', autenticarToken,  async (req: Request, res: Response) => {
-	try {
-		const refeicaoGetDeleteDto: RefeicaoGetDeleteDto = req.body;
-		const result = await refeicaoUsuarioPesquisarService(refeicaoGetDeleteDto);
-		return res.status(200).json(result);
-	} catch (error: any) {
-		return res.status(error.statusCode).json({ message: error.message });
-	}
+router.get('/pesquisar', autenticarToken, async (req: Request, res: Response) => {
+	const refeicaoGetDeleteDto: RefeicaoGetDeleteDto = req.body;
+	const result = await refeicaoUsuarioPesquisarService(refeicaoGetDeleteDto);
+	return res.status(200).json(result);
+
 });
 
-router.post('/adicionar', autenticarToken,  async (req: Request, res: Response) => {
-	try {
-		const refeicaoPostPutDto: RefeicaoPostPutDto = req.body;
-		const result = await refeicaoUsuarioAdicionarService(refeicaoPostPutDto);
-		return res.status(201).json(result);
-	} catch (error: any) {
-		return res.status(error.statusCode).json({ message: error.message });
-	}
+router.post('/adicionar', autenticarToken, async (req: Request, res: Response) => {
+	const refeicaoPostPutDto: RefeicaoPostPutDto = req.body;
+	const result = await refeicaoUsuarioAdicionarService(refeicaoPostPutDto);
+	return res.status(201).json(result);
+
 });
 
-router.patch('/atualizar/nome', autenticarToken,  async (req: Request, res: Response) => {
-	try {
-		const refeicaoPatchNomeDto: RefeicaoPatchNomeDto = req.body;
-		const result = await atualizarNomeRefeicaoUsuarioService(refeicaoPatchNomeDto);
-		return res.status(200).json(result);
-	} catch (error: any) {
-		return res.status(error.statusCode).json({ message: error.message });
-	}
+router.patch('/atualizar/nome', autenticarToken, async (req: Request, res: Response) => {
+	const refeicaoPatchNomeDto: RefeicaoPatchNomeDto = req.body;
+	const result = await atualizarNomeRefeicaoUsuarioService(refeicaoPatchNomeDto);
+	return res.status(200).json(result);
+
 });
 
-router.delete('/remover', autenticarToken,  async (req: Request, res: Response) => {
-	try {
-		const refeicaoGetDeleteDto: RefeicaoGetDeleteDto = req.body
-		await refeicaoUsuarioRemoverService(refeicaoGetDeleteDto);
-		return res.status(204).json();
-	} catch (error: any) {
-		return res.status(error.statusCode).json({ message: error.message });
-	}
+router.delete('/remover', autenticarToken, async (req: Request, res: Response) => {
+	const refeicaoGetDeleteDto: RefeicaoGetDeleteDto = req.body
+	await refeicaoUsuarioRemoverService(refeicaoGetDeleteDto);
+	return res.status(204).json();
+
 });
 
-router.post('/adicionar/alimentoApp', autenticarToken,  async (req: Request, res: Response) => {
-	try {
-		const refeicaoAlimentoPostDeleteDto: RefeicaoAlimentoPostDto = req.body;
-		const result = await refeicaoUsuarioAdicionarAlimentoService(refeicaoAlimentoPostDeleteDto);
-		return res.status(201).json(result);
-	} catch (error: any) {
-		return res.status(error.statusCode).json({ message: error.message });
-	}
+router.post('/adicionar/alimentoApp', autenticarToken, async (req: Request, res: Response) => {
+	const refeicaoAlimentoPostDeleteDto: RefeicaoAlimentoPostDto = req.body;
+	const result = await refeicaoUsuarioAdicionarAlimentoService(refeicaoAlimentoPostDeleteDto);
+	return res.status(201).json(result);
+
 });
 
-router.delete('/remover/alimentoApp', autenticarToken,  async (req: Request, res: Response) => {
-	try {
-		const refeicaoAlimentoDeleteDto: RefeicaoAlimentoDeleteDto = req.body
-		await refeicaoUsuarioRemoverAlimentoService(refeicaoAlimentoDeleteDto);
-		return res.status(204).json();
-	} catch (error: any) {
-		return res.status(error.statusCode).json({ message: error.message });
-	}
+router.delete('/remover/alimentoApp', autenticarToken, async (req: Request, res: Response) => {
+	const refeicaoAlimentoDeleteDto: RefeicaoAlimentoDeleteDto = req.body
+	await refeicaoUsuarioRemoverAlimentoService(refeicaoAlimentoDeleteDto);
+	return res.status(204).json();
 });
 export default router;
