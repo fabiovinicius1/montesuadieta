@@ -3,20 +3,23 @@ import { PrismaClient } from '@prisma/client';
 import { AlimentoAppPostPutDto } from '../src/dto/alimentoAppDto/alimentoAppPostPutDto';
 import { AlimentoAppGetDeleteDto } from '../src/dto/alimentoAppDto/alimentoAppGetDeleteDto';
 import { app, server } from '../src/server';
+import { AdminPostPutRequestDTO } from '../src/dto/adminDto/AdminPostPutRequestDTO';
+import { AdminLoginPostRequestDTO } from '../src/dto/adminDto/AdminLoginPosRequestDTO';
 
 const prisma = new PrismaClient();
+let token: any;
 
 beforeAll(async () => {
 	prisma.$connect();
 });
 
 beforeEach(async () => {
-	await prisma.$executeRaw`DELETE FROM usuarios;`
+	await prisma.$executeRaw`DELETE FROM admin;`
 	await prisma.$executeRaw`DELETE FROM alimentosTabelaApp;`
 	await prisma.$executeRaw`DELETE FROM refeicaoUsuario;`
 	await prisma.$executeRaw`DELETE FROM alimentosRefeicao;`
 	await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='alimentosTabelaApp';`
-	await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='usuarios';`
+	await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='admin';`
 	await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='refeicaoUsuario';`
 	await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='alimentosRefeicao';`
 	const alimentoAppPostPutDto: AlimentoAppPostPutDto = {
@@ -35,15 +38,26 @@ beforeEach(async () => {
 			...alimentoAppPostPutDto
 		}
 	});
+	const adminPostPutRequestDTO: AdminPostPutRequestDTO = {
+		'login': 'admin',
+		'senha': '123'
+	};
+	await request(app).post('/admin/adicionar').send(adminPostPutRequestDTO);
+	const adminLoginPostRequestDTO: AdminLoginPostRequestDTO = {
+		'login': 'admin',
+		'senha': '123'
+	}
+	const response = await request(app).post('/auth/login/admin').send(adminLoginPostRequestDTO);
+	token = response.body;
 });
 
 afterEach(async () => {
-	await prisma.$executeRaw`DELETE FROM usuarios;`
+	await prisma.$executeRaw`DELETE FROM admin;`
 	await prisma.$executeRaw`DELETE FROM alimentosTabelaApp;`
 	await prisma.$executeRaw`DELETE FROM refeicaoUsuario;`
 	await prisma.$executeRaw`DELETE FROM alimentosRefeicao;`
 	await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='alimentosTabelaApp';`
-	await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='usuarios';`
+	await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='admin';`
 	await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='refeicaoUsuario';`
 	await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='alimentosRefeicao';`
 });
@@ -88,7 +102,7 @@ describe('POST /alimentosApp/adicionar', () => {
 			"poliinsaturados": 3,
 			"gordutaTotal": 10
 		}
-		const response = await request(app).post('/alimentosApp/adicionar').send(alimentoAppPostPutDto);
+		const response = await request(app).post('/alimentosApp/adicionar').send(alimentoAppPostPutDto).set('Authorization', `${token}`);
 
 		expect(response.status).toBe(201);
 		expect(response.body).toHaveProperty('id');
@@ -101,7 +115,7 @@ describe('DELETE /alimentosApp/remover', () => {
 		const alimentoAppGetDeleteDto: AlimentoAppGetDeleteDto = {
 			'id': 100
 		}
-		const response = await request(app).delete('/alimentosApp/remover').send(alimentoAppGetDeleteDto);
+		const response = await request(app).delete('/alimentosApp/remover').send(alimentoAppGetDeleteDto).set('Authorization', `${token}`);
 
 		expect(response.status).toBe(404);
 		expect(response.body).toEqual({ message: 'Alimento não existe!' });
@@ -110,7 +124,7 @@ describe('DELETE /alimentosApp/remover', () => {
 		const alimentoAppGetDeleteDto: AlimentoAppGetDeleteDto = {
 			'id': 1
 		}
-		const response = await request(app).delete('/alimentosApp/remover').send(alimentoAppGetDeleteDto);
+		const response = await request(app).delete('/alimentosApp/remover').send(alimentoAppGetDeleteDto).set('Authorization', `${token}`);
 
 		expect(response.status).toBe(204);
 		expect(response.body).toEqual({});
