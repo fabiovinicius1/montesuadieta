@@ -8,8 +8,10 @@ import { RefeicaoPatchNomeDto } from '../src/dto/refeicaoDto/refeicaoPatchNomeDt
 import { RefeicaoAlimentoPostDto } from '../src/dto/refeicaoDto/refeicaoAlimentoPostDto';
 import { RefeicaoAlimentoDeleteDto } from '../src/dto/refeicaoDto/RefeicaoAlimentoDeleteDto';
 import { app, server } from '../src/server';
+import { UsuarioLoginPostRequestDTO } from '../src/dto/usuarioDto/usuarioLoginPostRequestDTO';
 
 const prisma = new PrismaClient();
+let token:any;
 
 beforeAll(async () => {
 	prisma.$connect();
@@ -45,11 +47,13 @@ beforeEach(async () => {
 		'peso': 50,
 		'senha': "456"
 	}
-	await prisma.usuarios.create({
-		data: {
-			...usuarioPostPutRequestDTO
-		}
-	});
+	await request(app).post('/usuarios/adicionar').send(usuarioPostPutRequestDTO);
+	const usuarioLoginPostRequestDTO: UsuarioLoginPostRequestDTO = {
+		'login': 'vinicius',
+		'senha': '456'
+	}
+	const response = await request(app).post('/auth/login/usuario').send(usuarioLoginPostRequestDTO);
+	token = response.body;
 	const refeicaoPostPutDto: RefeicaoPostPutDto = {
 		'nomeRefeicao': 'Almoço',
 		'usuarioId': 1
@@ -98,7 +102,7 @@ describe('GET /refeicoes/pesquisar', () => {
 		const refeicaoGetDeleteDto: RefeicaoGetDeleteDto = {
 			'id': 100
 		}
-		const response = await request(app).get('/refeicoes/pesquisar').send(refeicaoGetDeleteDto);
+		const response = await request(app).get('/refeicoes/pesquisar').send(refeicaoGetDeleteDto).set('Authorization', `${token}`);
 
 		expect(response.status).toBe(404);
 		expect(response.body).toEqual({ message: 'Refeição não existe!' });
@@ -107,7 +111,7 @@ describe('GET /refeicoes/pesquisar', () => {
 		const refeicaoGetDeleteDto: RefeicaoGetDeleteDto = {
 			'id': 1
 		}
-		const response = await request(app).get('/refeicoes/pesquisar').send(refeicaoGetDeleteDto);
+		const response = await request(app).get('/refeicoes/pesquisar').send(refeicaoGetDeleteDto).set('Authorization', `${token}`);
 
 		expect(response.status).toBe(200);
 		expect(response.body).toHaveProperty('nomeRefeicao', 'Almoço');
@@ -120,7 +124,7 @@ describe('PATCH /refeicoes/atualizar/nome', () => {
 			'id': 100,
 			'nomeRefeicao': 'Jantar'
 		}
-		const response = await request(app).patch('/refeicoes/atualizar/nome').send(RefeicaoPatchNomeDto);
+		const response = await request(app).patch('/refeicoes/atualizar/nome').send(RefeicaoPatchNomeDto).set('Authorization', `${token}`);
 
 		expect(response.status).toBe(404);
 		expect(response.body).toEqual({ message: 'Refeição não existe!' });
@@ -130,7 +134,7 @@ describe('PATCH /refeicoes/atualizar/nome', () => {
 			'id': 1,
 			'nomeRefeicao': 'Almoço atualizado'
 		}
-		const response = await request(app).patch('/refeicoes/atualizar/nome').send(RefeicaoPatchNomeDto);
+		const response = await request(app).patch('/refeicoes/atualizar/nome').send(RefeicaoPatchNomeDto).set('Authorization', `${token}`);
 
 		expect(response.status).toBe(200);
 		expect(response.body).toHaveProperty('nomeRefeicao', 'Almoço atualizado');
@@ -143,7 +147,7 @@ describe('POST /refeicoes/adicionar', () => {
 			'nomeRefeicao': 'Café da manha',
 			'usuarioId': 100,
 		}
-		const response = await request(app).post('/refeicoes/adicionar').send(refeicaoPostPutDto);
+		const response = await request(app).post('/refeicoes/adicionar').send(refeicaoPostPutDto).set('Authorization', `${token}`);
 
 		expect(response.status).toBe(404);
 		expect(response.body).toEqual({ message: 'Usuário não existe!' });
@@ -153,7 +157,7 @@ describe('POST /refeicoes/adicionar', () => {
 			'nomeRefeicao': 'Café da manha',
 			'usuarioId': 1,
 		}
-		const response = await request(app).post('/refeicoes/adicionar').send(refeicaoPostPutDto);
+		const response = await request(app).post('/refeicoes/adicionar').send(refeicaoPostPutDto).set('Authorization', `${token}`);
 
 		expect(response.status).toBe(201);
 		expect(response.body).toHaveProperty('nomeRefeicao', 'Café da manha');
@@ -165,7 +169,7 @@ describe('DELETE /refeicoes/remover', () => {
 		const refeicaoGetDeleteDto: RefeicaoGetDeleteDto = {
 			'id': 100
 		}
-		const response = await request(app).delete('/refeicoes/remover').send(refeicaoGetDeleteDto);
+		const response = await request(app).delete('/refeicoes/remover').send(refeicaoGetDeleteDto).set('Authorization', `${token}`);
 
 		expect(response.status).toBe(404);
 		expect(response.body).toEqual({ message: 'Refeição não existe!' });
@@ -174,7 +178,7 @@ describe('DELETE /refeicoes/remover', () => {
 		const refeicaoGetDeleteDto: RefeicaoGetDeleteDto = {
 			'id': 1
 		}
-		const response = await request(app).delete('/refeicoes/remover').send(refeicaoGetDeleteDto);
+		const response = await request(app).delete('/refeicoes/remover').send(refeicaoGetDeleteDto).set('Authorization', `${token}`);
 
 		expect(response.status).toBe(204);
 		expect(response.body).toEqual({});
@@ -187,7 +191,7 @@ describe('POST /refeicoes/adicionar/alimentoApp', () => {
 			'idAlimento': 1,
 			'idRefeicao': 100,
 		}
-		const response = await request(app).post('/refeicoes/adicionar/alimentoApp').send(refeicaoAlimentoPostDto);
+		const response = await request(app).post('/refeicoes/adicionar/alimentoApp').send(refeicaoAlimentoPostDto).set('Authorization', `${token}`);
 
 		expect(response.status).toBe(404);
 		expect(response.body).toEqual({ message: 'Refeição não existe!' });
@@ -197,7 +201,7 @@ describe('POST /refeicoes/adicionar/alimentoApp', () => {
 			'idAlimento': 100,
 			'idRefeicao': 1,
 		}
-		const response = await request(app).post('/refeicoes/adicionar/alimentoApp').send(refeicaoAlimentoPostDto);
+		const response = await request(app).post('/refeicoes/adicionar/alimentoApp').send(refeicaoAlimentoPostDto).set('Authorization', `${token}`);
 
 		expect(response.status).toBe(404);
 		expect(response.body).toEqual({ message: 'Alimento não existe!' });
@@ -207,7 +211,7 @@ describe('POST /refeicoes/adicionar/alimentoApp', () => {
 			'idAlimento': 1,
 			'idRefeicao': 1,
 		}
-		const response = await request(app).post('/refeicoes/adicionar/alimentoApp').send(refeicaoAlimentoPostDto);
+		const response = await request(app).post('/refeicoes/adicionar/alimentoApp').send(refeicaoAlimentoPostDto).set('Authorization', `${token}`);
 
 		expect(response.status).toBe(201);
 		expect(response.body).toHaveProperty('refeicaoId', 1);
@@ -219,7 +223,7 @@ describe('DELETE /refeicoes/remover/alimentoApp', () => {
 		const refeicaoAlimentoDeleteDto: RefeicaoAlimentoDeleteDto = {
 			'id': 100
 		}
-		const response = await request(app).delete('/refeicoes/remover/alimentoApp').send(refeicaoAlimentoDeleteDto);
+		const response = await request(app).delete('/refeicoes/remover/alimentoApp').send(refeicaoAlimentoDeleteDto).set('Authorization', `${token}`);
 
 		expect(response.status).toBe(404);
 		expect(response.body).toEqual({ message: 'Alimento não existe na refeição!' });
@@ -228,7 +232,7 @@ describe('DELETE /refeicoes/remover/alimentoApp', () => {
 		const refeicaoAlimentoDeleteDto: RefeicaoAlimentoDeleteDto = {
 			'id': 1
 		}
-		const response = await request(app).delete('/refeicoes/remover/alimentoApp').send(refeicaoAlimentoDeleteDto);
+		const response = await request(app).delete('/refeicoes/remover/alimentoApp').send(refeicaoAlimentoDeleteDto).set('Authorization', `${token}`);
 
 		expect(response.status).toBe(204);
 		expect(response.body).toEqual({});
