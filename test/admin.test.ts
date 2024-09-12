@@ -1,0 +1,106 @@
+import request from 'supertest';
+import { PrismaClient } from '@prisma/client';
+import { app, server } from '../src/server';
+import { AdminPostPutRequestDTO } from '../src/dto/adminDto/AdminPostPutRequestDTO';
+import { AdminLoginPostRequestDTO } from '../src/dto/adminDto/AdminLoginPosRequestDTO';
+import { AdminGetDeleteRequestDTO } from '../src/dto/adminDto/AdminGetDeleteRequestDTO';
+
+const prisma = new PrismaClient();
+let token:any;
+
+beforeAll(async () => {
+	prisma.$connect();
+});
+
+beforeEach(async () => {
+	await prisma.$executeRaw`DELETE FROM admin;`
+	await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='admin';`
+	const adminPostPutRequestDTO: AdminPostPutRequestDTO = {
+		'login': 'admin',
+		'senha': '123'
+	};
+	await request(app).post('/admin/adicionar').send(adminPostPutRequestDTO);
+	const adminLoginPostRequestDTO: AdminLoginPostRequestDTO = {
+		'login': 'admin',
+		'senha': '123'
+	}
+	const response = await request(app).post('/auth/login/admin').send(adminLoginPostRequestDTO);
+	token = response.body;
+});
+
+afterEach(async () => {
+	await prisma.$executeRaw`DELETE FROM admin;`
+	await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='admin';`
+});
+
+afterAll(async () => {
+	prisma.$disconnect();
+	server.close()
+});
+
+describe('GET /admin/pesquisar', () => {
+	it('Pesquisa um admin que não existe', async () => {
+		const adminGetDeleteRequestDTO: AdminGetDeleteRequestDTO = {
+			'id': 100
+		}
+		const response = await request(app).get('/admin/pesquisar').send(adminGetDeleteRequestDTO).set('Authorization', `${token}`);
+
+		expect(response.status).toBe(404);
+		expect(response.body).toEqual({ message: 'Admin não existe!' });
+	});
+	it('Pesquisa um admin que existe', async () => {
+		const adminGetDeleteRequestDTO: AdminGetDeleteRequestDTO = {
+			'id': 1
+		}
+		const response = await request(app).get('/admin/pesquisar').send(adminGetDeleteRequestDTO).set('Authorization', `${token}`);
+
+		expect(response.status).toBe(200);
+		expect(response.body).toHaveProperty('login', 'admin');
+	});
+});
+
+
+describe('POST /admin/adicionar', () => {
+	it('Adiciona uma admin', async () => {
+		const adminPostPutRequestDTO: AdminPostPutRequestDTO = {
+			'login': 'adminVinicius',
+			'senha': "456"
+		}
+		const response = await request(app).post('/admin/adicionar').send(adminPostPutRequestDTO);
+
+		expect(response.status).toBe(201);
+		expect(response.body).toHaveProperty('id');
+		expect(response.body).toHaveProperty('login', 'adminVinicius');
+	});
+	it('Adiciona uma admin com login já existente', async () => {
+		const adminPostPutRequestDTO: AdminPostPutRequestDTO = {
+			'login': 'admin',
+			'senha': '123'
+		};
+		const response = await request(app).post('/admin/adicionar').send(adminPostPutRequestDTO);
+
+		expect(response.status).toBe(404);
+		expect(response.body).toEqual({ message: 'Login já existe!' });
+	});
+});
+
+describe('DELETE /admin/remover', () => {
+	it('Remove um admin que não existe', async () => {
+		const adminGetDeleteRequestDTO: AdminGetDeleteRequestDTO = {
+			'id': 100
+		}
+		const response = await request(app).delete('/admin/remover').send(adminGetDeleteRequestDTO).set('Authorization', `${token}`);
+
+		expect(response.status).toBe(404);
+		expect(response.body).toEqual({ message: 'Admin não existe!' });
+	});
+	it('Remove um admin que existe', async () => {
+		const adminGetDeleteRequestDTO: AdminGetDeleteRequestDTO = {
+			'id': 1
+		}
+		const response = await request(app).delete('/admin/remover').send(adminGetDeleteRequestDTO).set('Authorization', `${token}`);
+
+		expect(response.status).toBe(204);
+		expect(response.body).toEqual({});
+	});
+});
