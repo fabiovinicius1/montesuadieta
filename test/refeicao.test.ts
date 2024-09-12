@@ -45,12 +45,12 @@ beforeEach(async () => {
 	const usuarioPostPutRequestDTO: UsuarioPostPutRequestDTO = {
 		'login': 'vinicius',
 		'peso': 50,
-		'senha': "456"
+		'senha': "123456"
 	}
 	await request(app).post('/usuarios/adicionar').send(usuarioPostPutRequestDTO);
 	const usuarioLoginPostRequestDTO: UsuarioLoginPostRequestDTO = {
 		'login': 'vinicius',
-		'senha': '456'
+		'senha': '123456'
 	}
 	const response = await request(app).post('/auth/login/usuario').send(usuarioLoginPostRequestDTO);
 	token = response.body;
