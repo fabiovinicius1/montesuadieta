@@ -64,7 +64,7 @@ describe('POST /admin/adicionar', () => {
 	it('Adiciona uma admin', async () => {
 		const adminPostPutRequestDTO: AdminPostPutRequestDTO = {
 			'login': 'adminVinicius',
-			'senha': "456"
+			'senha': "123456"
 		}
 		const response = await request(app).post('/admin/adicionar').send(adminPostPutRequestDTO);
 
@@ -81,6 +81,26 @@ describe('POST /admin/adicionar', () => {
 
 		expect(response.status).toBe(404);
 		expect(response.body).toEqual({ message: 'Login já existe!' });
+	});
+	it('Adiciona uma admin com login vazio', async () => {
+		const adminPostPutRequestDTO: AdminPostPutRequestDTO = {
+			'login': '',
+			'senha': '123456'
+		};
+		const response = await request(app).post('/usuarios/adicionar').send(adminPostPutRequestDTO);
+
+		expect(response.status).toBe(400);
+		expect(response.body).toEqual({ message: 'Login é obrigatório' });
+	});
+	it('Adiciona uma admin com senha com tamanho invalido', async () => {
+		const adminPostPutRequestDTO: AdminPostPutRequestDTO = {
+			'login': 'admin',
+			'senha': '123'
+		};
+		const response = await request(app).post('/admin/adicionar').send(adminPostPutRequestDTO);
+
+		expect(response.status).toBe(400);
+		expect(response.body).toEqual({ message: 'Senha deve ter pelo menos 6 caracteres' });
 	});
 });
 
@@ -102,5 +122,14 @@ describe('DELETE /admin/remover', () => {
 
 		expect(response.status).toBe(204);
 		expect(response.body).toEqual({});
+	});
+	it('Remove um admin com id negativo', async () => {
+		const adminGetDeleteRequestDTO: AdminGetDeleteRequestDTO = {
+			'id': -1
+		}
+		const response = await request(app).delete('/admin/remover').send(adminGetDeleteRequestDTO).set('Authorization', `${token}`);
+
+		expect(response.status).toBe(400);
+		expect(response.body).toEqual({ message: 'Id deve ser um número positivo' });
 	});
 });
