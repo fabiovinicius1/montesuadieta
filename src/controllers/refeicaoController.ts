@@ -1,55 +1,56 @@
 import { Request, Response, Router } from 'express';
-import { RefeicaoPostPutDto } from '../dto/refeicaoDto/refeicaoPostPutDto';
-import { RefeicaoGetDeleteDto } from '../dto/refeicaoDto/refeicaoGetDeleteDto';
+import { RefeicaoPostPutDto, RefeicaoPostPutSchema } from '../dto/refeicaoDto/refeicaoPostPutDto';
+import { RefeicaoGetDeleteDto, RefeicaoGetDeleteSchema } from '../dto/refeicaoDto/refeicaoGetDeleteDto';
 import { refeicaoUsuarioAdicionarService } from '../services/refeicao/refeicaoUsuarioAdicionarService';
 import { refeicaoUsuarioRemoverService } from '../services/refeicao/refeicaoUsuarioRemoverService';
 import { refeicaoUsuarioPesquisarService } from '../services/refeicao/refeicaoUsuarioPesquisarService';
-import { RefeicaoPatchNomeDto } from '../dto/refeicaoDto/refeicaoPatchNomeDto';
+import { RefeicaoPatchNomeDto, RefeicaoPatchNomeSchema } from '../dto/refeicaoDto/refeicaoPatchNomeDto';
 import { atualizarNomeRefeicaoUsuarioService } from '../services/refeicao/refeicaoUsuarioAtualizarNome';
-import { RefeicaoAlimentoPostDto } from '../dto/refeicaoDto/refeicaoAlimentoPostDto';
+import { RefeicaoAlimentoPostDto, RefeicaoAlimentoPostSchema } from '../dto/refeicaoDto/refeicaoAlimentoPostDto';
 import { refeicaoUsuarioAdicionarAlimentoService } from '../services/refeicao/refeicaoUsuarioAdicionarAlimentoService';
 import { refeicaoUsuarioRemoverAlimentoService } from '../services/refeicao/refeicaoUsuarioRemoverAlimentoService';
-import { RefeicaoAlimentoDeleteDto } from '../dto/refeicaoDto/RefeicaoAlimentoDeleteDto';
+import { RefeicaoAlimentoDeleteDto, RefeicaoAlimentoDeleteSchema } from '../dto/refeicaoDto/RefeicaoAlimentoDeleteDto';
 import { autenticarToken } from '../middleware/autenticarToken';
+import { validarDados } from '../middleware/validacao';
 
 const router = Router();
 
-router.get('/pesquisar', autenticarToken, async (req: Request, res: Response) => {
+router.get('/pesquisar', validarDados(RefeicaoGetDeleteSchema), autenticarToken, async (req: Request, res: Response) => {
 	const refeicaoGetDeleteDto: RefeicaoGetDeleteDto = req.body;
 	const result = await refeicaoUsuarioPesquisarService(refeicaoGetDeleteDto);
 	return res.status(200).json(result);
 
 });
 
-router.post('/adicionar', autenticarToken, async (req: Request, res: Response) => {
+router.post('/adicionar', validarDados(RefeicaoPostPutSchema), autenticarToken, async (req: Request, res: Response) => {
 	const refeicaoPostPutDto: RefeicaoPostPutDto = req.body;
 	const result = await refeicaoUsuarioAdicionarService(refeicaoPostPutDto);
 	return res.status(201).json(result);
 
 });
 
-router.patch('/atualizar/nome', autenticarToken, async (req: Request, res: Response) => {
+router.patch('/atualizar/nome', validarDados(RefeicaoPatchNomeSchema), autenticarToken, async (req: Request, res: Response) => {
 	const refeicaoPatchNomeDto: RefeicaoPatchNomeDto = req.body;
 	const result = await atualizarNomeRefeicaoUsuarioService(refeicaoPatchNomeDto);
 	return res.status(200).json(result);
 
 });
 
-router.delete('/remover', autenticarToken, async (req: Request, res: Response) => {
+router.delete('/remover', validarDados(RefeicaoGetDeleteSchema), autenticarToken, async (req: Request, res: Response) => {
 	const refeicaoGetDeleteDto: RefeicaoGetDeleteDto = req.body
 	await refeicaoUsuarioRemoverService(refeicaoGetDeleteDto);
 	return res.status(204).json();
 
 });
 
-router.post('/adicionar/alimentoApp', autenticarToken, async (req: Request, res: Response) => {
+router.post('/adicionar/alimentoApp', validarDados(RefeicaoAlimentoPostSchema), autenticarToken, async (req: Request, res: Response) => {
 	const refeicaoAlimentoPostDeleteDto: RefeicaoAlimentoPostDto = req.body;
 	const result = await refeicaoUsuarioAdicionarAlimentoService(refeicaoAlimentoPostDeleteDto);
 	return res.status(201).json(result);
 
 });
 
-router.delete('/remover/alimentoApp', autenticarToken, async (req: Request, res: Response) => {
+router.delete('/remover/alimentoApp', validarDados(RefeicaoAlimentoDeleteSchema), autenticarToken, async (req: Request, res: Response) => {
 	const refeicaoAlimentoDeleteDto: RefeicaoAlimentoDeleteDto = req.body
 	await refeicaoUsuarioRemoverAlimentoService(refeicaoAlimentoDeleteDto);
 	return res.status(204).json();

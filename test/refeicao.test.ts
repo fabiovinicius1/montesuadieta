@@ -116,6 +116,15 @@ describe('GET /refeicoes/pesquisar', () => {
 		expect(response.status).toBe(200);
 		expect(response.body).toHaveProperty('nomeRefeicao', 'Almoço');
 	});
+	it('Pesquisa uma refeição com id negativo', async () => {
+		const refeicaoGetDeleteDto: RefeicaoGetDeleteDto = {
+			'id': -1
+		}
+		const response = await request(app).get('/refeicoes/pesquisar').send(refeicaoGetDeleteDto).set('Authorization', `${token}`);
+
+		expect(response.status).toBe(400);
+		expect(response.body).toEqual({ message: 'Id deve ser um número positivo' });
+	});
 });
 
 describe('PATCH /refeicoes/atualizar/nome', () => {
@@ -138,6 +147,26 @@ describe('PATCH /refeicoes/atualizar/nome', () => {
 
 		expect(response.status).toBe(200);
 		expect(response.body).toHaveProperty('nomeRefeicao', 'Almoço atualizado');
+	});
+	it('Atualiza o nome de uma refeição passando nome vazio', async () => {
+		const refeicaoPatchNomeDto: RefeicaoPatchNomeDto = {
+			'id': 1,
+			'nomeRefeicao': ''
+		}
+		const response = await request(app).patch('/refeicoes/atualizar/nome').send(refeicaoPatchNomeDto).set('Authorization', `${token}`);
+
+		expect(response.status).toBe(400);
+		expect(response.body).toEqual({ message: 'Nome da refeição é obrigatório' });
+	});
+	it('Atualiza o nome de uma refeição pasando id negativo', async () => {
+		const refeicaoPatchNomeDto: RefeicaoPatchNomeDto = {
+			'id': -1,
+			'nomeRefeicao': 'Almoço atualizado'
+		}
+		const response = await request(app).patch('/refeicoes/atualizar/nome').send(refeicaoPatchNomeDto).set('Authorization', `${token}`);
+
+		expect(response.status).toBe(400);
+		expect(response.body).toEqual({ message: 'Id deve ser um número positivo' });
 	});
 });
 
@@ -162,6 +191,26 @@ describe('POST /refeicoes/adicionar', () => {
 		expect(response.status).toBe(201);
 		expect(response.body).toHaveProperty('nomeRefeicao', 'Café da manha');
 	});
+	it('Adiciona uma refeição passando nome vazio', async () => {
+		const refeicaoPostPutDto: RefeicaoPostPutDto = {
+			'nomeRefeicao': '',
+			'usuarioId': 1,
+		}
+		const response = await request(app).post('/refeicoes/adicionar').send(refeicaoPostPutDto).set('Authorization', `${token}`);
+
+		expect(response.status).toBe(400);
+		expect(response.body).toEqual({ message: 'Nome da refeição é obrigatório' });
+	});
+	it('Adiciona uma refeição pasando id negativo', async () => {
+		const refeicaoPostPutDto: RefeicaoPostPutDto = {
+			'nomeRefeicao': 'Café da manha',
+			'usuarioId': -1,
+		}
+		const response = await request(app).post('/refeicoes/adicionar').send(refeicaoPostPutDto).set('Authorization', `${token}`);
+
+		expect(response.status).toBe(400);
+		expect(response.body).toEqual({ message: 'Id deve ser um número positivo' });
+	});
 });
 
 describe('DELETE /refeicoes/remover', () => {
@@ -182,6 +231,15 @@ describe('DELETE /refeicoes/remover', () => {
 
 		expect(response.status).toBe(204);
 		expect(response.body).toEqual({});
+	});
+	it('Remove uma refeição com id negativo', async () => {
+		const refeicaoGetDeleteDto: RefeicaoGetDeleteDto = {
+			'id': -1
+		}
+		const response = await request(app).delete('/refeicoes/remover').send(refeicaoGetDeleteDto).set('Authorization', `${token}`);
+
+		expect(response.status).toBe(400);
+		expect(response.body).toEqual({ message: 'Id deve ser um número positivo' });
 	});
 });
 
@@ -216,6 +274,26 @@ describe('POST /refeicoes/adicionar/alimentoApp', () => {
 		expect(response.status).toBe(201);
 		expect(response.body).toHaveProperty('refeicaoId', 1);
 	});
+	it('Adiciona uma alimento na refeição passando idAlimento negativo', async () => {
+		const refeicaoAlimentoPostDto: RefeicaoAlimentoPostDto = {
+			'idAlimento': -1,
+			'idRefeicao': 1,
+		}
+		const response = await request(app).post('/refeicoes/adicionar/alimentoApp').send(refeicaoAlimentoPostDto).set('Authorization', `${token}`);
+
+		expect(response.status).toBe(400);
+		expect(response.body).toEqual({ message: 'Id deve ser um número positivo' });
+	});
+	it('Adiciona uma alimento na refeição passando idRefeicao negativo', async () => {
+		const refeicaoAlimentoPostDto: RefeicaoAlimentoPostDto = {
+			'idAlimento': 1,
+			'idRefeicao': -1,
+		}
+		const response = await request(app).post('/refeicoes/adicionar/alimentoApp').send(refeicaoAlimentoPostDto).set('Authorization', `${token}`);
+
+		expect(response.status).toBe(400);
+		expect(response.body).toEqual({ message: 'Id deve ser um número positivo' });
+	});
 });
 
 describe('DELETE /refeicoes/remover/alimentoApp', () => {
@@ -236,5 +314,14 @@ describe('DELETE /refeicoes/remover/alimentoApp', () => {
 
 		expect(response.status).toBe(204);
 		expect(response.body).toEqual({});
+	});
+	it('Remove um alimento da refeição com id negativo', async () => {
+		const refeicaoAlimentoDeleteDto: RefeicaoAlimentoDeleteDto = {
+			'id': -1
+		}
+		const response = await request(app).delete('/refeicoes/remover/alimentoApp').send(refeicaoAlimentoDeleteDto).set('Authorization', `${token}`);
+
+		expect(response.status).toBe(400);
+		expect(response.body).toEqual({ message: 'Id deve ser um número positivo' });
 	});
 });
