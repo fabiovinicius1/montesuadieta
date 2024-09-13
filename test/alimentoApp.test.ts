@@ -86,6 +86,15 @@ describe('GET /alimentosApp/pesquisar', () => {
 		expect(response.status).toBe(200);
 		expect(response.body).toHaveProperty('nomeAlimentoApp', 'arroz');
 	});
+	it('Pesquisa um alimento do App com id negativo', async () => {
+		const alimentoAppGetDeleteDto: AlimentoAppGetDeleteDto = {
+			'id': -1
+		}
+		const response = await request(app).get('/alimentosApp/pesquisar').send(alimentoAppGetDeleteDto);
+
+		expect(response.status).toBe(400);
+		expect(response.body).toEqual({ message: 'Id deve ser um número positivo' });
+	});
 });
 
 
@@ -108,6 +117,159 @@ describe('POST /alimentosApp/adicionar', () => {
 		expect(response.body).toHaveProperty('id');
 		expect(response.body).toHaveProperty('nomeAlimentoApp', 'teste');
 	});
+	it('Adiciona uma alimento do App com nome vazio', async () => {
+		const alimentoAppPostPutDto: AlimentoAppPostPutDto = {
+			"porcao": 100,
+			"nomeAlimentoApp": "",
+			"caloria": 12,
+			"proteina": 6,
+			"carboidrato": 80,
+			"saturados": 3,
+			"monoinsaturados": 4,
+			"poliinsaturados": 3,
+			"gordutaTotal": 10
+		}
+		const response = await request(app).post('/alimentosApp/adicionar').send(alimentoAppPostPutDto).set('Authorization', `${token}`);
+
+		expect(response.status).toBe(400);
+		expect(response.body).toEqual({ message: 'Nome do alimento é obrigatório' });
+	});
+	it('Adiciona uma alimento do App com porçao negativo', async () => {
+		const alimentoAppPostPutDto: AlimentoAppPostPutDto = {
+			"porcao": -100,
+			"nomeAlimentoApp": "teste",
+			"caloria": 12,
+			"proteina": 6,
+			"carboidrato": 80,
+			"saturados": 3,
+			"monoinsaturados": 4,
+			"poliinsaturados": 3,
+			"gordutaTotal": 10
+		}
+		const response = await request(app).post('/alimentosApp/adicionar').send(alimentoAppPostPutDto).set('Authorization', `${token}`);
+
+		expect(response.status).toBe(400);
+		expect(response.body).toEqual({ message: 'Porção deve ser um número positivo' });
+	});
+	it('Adiciona uma alimento do App com caloria negativo', async () => {
+		const alimentoAppPostPutDto: AlimentoAppPostPutDto = {
+			"porcao": 100,
+			"nomeAlimentoApp": "teste",
+			"caloria": -12,
+			"proteina": 6,
+			"carboidrato": 80,
+			"saturados": 3,
+			"monoinsaturados": 4,
+			"poliinsaturados": 3,
+			"gordutaTotal": 10
+		}
+		const response = await request(app).post('/alimentosApp/adicionar').send(alimentoAppPostPutDto).set('Authorization', `${token}`);
+
+		expect(response.status).toBe(400);
+		expect(response.body).toEqual({ message: 'Caloria deve ser um número positivo' });
+	});
+	it('Adiciona uma alimento do App com proteina negativo', async () => {
+		const alimentoAppPostPutDto: AlimentoAppPostPutDto = {
+			"porcao": 100,
+			"nomeAlimentoApp": "teste",
+			"caloria": 12,
+			"proteina": -6,
+			"carboidrato": 80,
+			"saturados": 3,
+			"monoinsaturados": 4,
+			"poliinsaturados": 3,
+			"gordutaTotal": 10
+		}
+		const response = await request(app).post('/alimentosApp/adicionar').send(alimentoAppPostPutDto).set('Authorization', `${token}`);
+
+		expect(response.status).toBe(400);
+		expect(response.body).toEqual({ message: 'Proteína deve ser um número positivo' });
+	});
+	it('Adiciona uma alimento do App com carboidrato negativo', async () => {
+		const alimentoAppPostPutDto: AlimentoAppPostPutDto = {
+			"porcao": 100,
+			"nomeAlimentoApp": "teste",
+			"caloria": 12,
+			"proteina": 6,
+			"carboidrato": -80,
+			"saturados": 3,
+			"monoinsaturados": 4,
+			"poliinsaturados": 3,
+			"gordutaTotal": 10
+		}
+		const response = await request(app).post('/alimentosApp/adicionar').send(alimentoAppPostPutDto).set('Authorization', `${token}`);
+
+		expect(response.status).toBe(400);
+		expect(response.body).toEqual({ message: 'Carboidrato deve ser um número positivo' });
+	});
+	it('Adiciona uma alimento do App com saturados negativo', async () => {
+		const alimentoAppPostPutDto: AlimentoAppPostPutDto = {
+			"porcao": 100,
+			"nomeAlimentoApp": "teste",
+			"caloria": 12,
+			"proteina": 6,
+			"carboidrato": 80,
+			"saturados": -3,
+			"monoinsaturados": 4,
+			"poliinsaturados": 3,
+			"gordutaTotal": 10
+		}
+		const response = await request(app).post('/alimentosApp/adicionar').send(alimentoAppPostPutDto).set('Authorization', `${token}`);
+
+		expect(response.status).toBe(400);
+		expect(response.body).toEqual({ message: 'Saturados deve ser um número positivo' });
+	});
+	it('Adiciona uma alimento do App com monoinsaturados negativo', async () => {
+		const alimentoAppPostPutDto: AlimentoAppPostPutDto = {
+			"porcao": 100,
+			"nomeAlimentoApp": "teste",
+			"caloria": 12,
+			"proteina": 6,
+			"carboidrato": 80,
+			"saturados": 3,
+			"monoinsaturados": -4,
+			"poliinsaturados": 3,
+			"gordutaTotal": 10
+		}
+		const response = await request(app).post('/alimentosApp/adicionar').send(alimentoAppPostPutDto).set('Authorization', `${token}`);
+
+		expect(response.status).toBe(400);
+		expect(response.body).toEqual({ message: 'Monoinsaturados deve ser um número positivo' });
+	});
+	it('Adiciona uma alimento do App com poliinsaturados negativo', async () => {
+		const alimentoAppPostPutDto: AlimentoAppPostPutDto = {
+			"porcao": 100,
+			"nomeAlimentoApp": "teste",
+			"caloria": 12,
+			"proteina": 6,
+			"carboidrato": 80,
+			"saturados": 3,
+			"monoinsaturados": 4,
+			"poliinsaturados": -3,
+			"gordutaTotal": 10
+		}
+		const response = await request(app).post('/alimentosApp/adicionar').send(alimentoAppPostPutDto).set('Authorization', `${token}`);
+
+		expect(response.status).toBe(400);
+		expect(response.body).toEqual({ message: 'Poliinsaturados deve ser um número positivo' });
+	});
+	it('Adiciona uma alimento do App com Gordura total negativo', async () => {
+		const alimentoAppPostPutDto: AlimentoAppPostPutDto = {
+			"porcao": 100,
+			"nomeAlimentoApp": "teste",
+			"caloria": 12,
+			"proteina": 6,
+			"carboidrato": 80,
+			"saturados": 3,
+			"monoinsaturados": 4,
+			"poliinsaturados": 3,
+			"gordutaTotal": -10
+		}
+		const response = await request(app).post('/alimentosApp/adicionar').send(alimentoAppPostPutDto).set('Authorization', `${token}`);
+
+		expect(response.status).toBe(400);
+		expect(response.body).toEqual({ message: 'Gordura total deve ser um número positivo' });
+	});
 });
 
 describe('DELETE /alimentosApp/remover', () => {
@@ -128,5 +290,14 @@ describe('DELETE /alimentosApp/remover', () => {
 
 		expect(response.status).toBe(204);
 		expect(response.body).toEqual({});
+	});
+	it('Remove um alimento do App com id negativo', async () => {
+		const alimentoAppGetDeleteDto: AlimentoAppGetDeleteDto = {
+			'id': -1
+		}
+		const response = await request(app).delete('/alimentosApp/remover').send(alimentoAppGetDeleteDto);
+
+		expect(response.status).toBe(400);
+		expect(response.body).toEqual({ message: 'Id deve ser um número positivo' });
 	});
 });
