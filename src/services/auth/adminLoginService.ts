@@ -20,6 +20,6 @@ export const adminLoginService = async (adminPostPutRequestDTO: AdminPostPutRequ
 		cargo: 'admin',
 		id: usuarioPesquisado.id
 	};
-	const token = jwt.sign(payload, SECRET!);
+	const token = jwt.sign(payload, SECRET!, { expiresIn: "1d" });
 	return token;
 };
