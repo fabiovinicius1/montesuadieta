@@ -6,6 +6,7 @@ import { alimentoAppAdicionarService } from '../services/alimentoApp/alimentoApp
 import { alimentoAppRemoverService } from '../services/alimentoApp/alimentoAppRemoverService';
 import { autenticarToken } from '../middleware/autenticarToken';
 import { validarDados } from '../middleware/validacao';
+import { autorizarAcesso } from '../middleware/autorizarAcesso';
 
 const router = Router();
 
@@ -15,14 +16,14 @@ router.get('/pesquisar', validarDados(AlimentoAppGetDeleteSchema), async (req: R
 	return res.status(200).json(result);
 });
 
-router.post('/adicionar', validarDados(AlimentoAppPostPutSchema), autenticarToken, async (req: Request, res: Response) => {
+router.post('/adicionar', validarDados(AlimentoAppPostPutSchema), autenticarToken, autorizarAcesso, async (req: Request, res: Response) => {
 	const alimentoAppPostPutDto: AlimentoAppPostPutDto = req.body;
 	const result = await alimentoAppAdicionarService(alimentoAppPostPutDto)
 	return res.status(201).json(result)
 
 });
 
-router.delete('/remover', validarDados(AlimentoAppGetDeleteSchema), autenticarToken, async (req: Request, res: Response) => {
+router.delete('/remover', validarDados(AlimentoAppGetDeleteSchema), autenticarToken, autorizarAcesso, async (req: Request, res: Response) => {
 	const alimentoAppGetDeleteDto: AlimentoAppGetDeleteDto = req.body;
 	await alimentoAppRemoverService(alimentoAppGetDeleteDto);
 	return res.status(204).json();
