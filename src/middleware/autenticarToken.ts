@@ -10,7 +10,7 @@ export const autenticarToken = (req: Request, res: Response, next: NextFunction)
 	}
 	try {
 		const decoded = jwt.verify(token, SECRET!);
-		req.body.TokenDecodificado = decoded; 
+		req.body.tokenPayload = decoded; 
 		next();
 	} catch (error) {
 		return res.status(401).json({ message: 'Token inválido!' });

@@ -64,7 +64,7 @@ describe('POST /auth/login/usuario', () => {
 		const response = await request(app).post('/auth/login/usuario').send(usuarioLoginPostRequestDTO);
 		expect(response.status).toBe(201);
 		const decoded = Jwt.verify(response.body, process.env.SECRET!);
-		expect(decoded).toEqual('siqueira');
+		expect(decoded).toEqual(expect.objectContaining({ login: 'siqueira', cargo: 'user', id: 1 }));
 	});
 	it('Login passado incorreto', async () => {
 		const usuarioLoginPostRequestDTO: UsuarioLoginPostRequestDTO = {
@@ -113,7 +113,7 @@ describe('POST /auth/login/admin', () => {
 		const response = await request(app).post('/auth/login/admin').send(adminLoginPostRequestDTO);
 		expect(response.status).toBe(201);
 		const decoded = Jwt.verify(response.body, process.env.SECRET!);
-		expect(decoded).toEqual('admin');
+		expect(decoded).toEqual(expect.objectContaining({ login: 'admin', cargo: 'admin', id: 1 }));
 	});
 	it('Login passado incorreto', async () => {
 		const adminLoginPostRequestDTO: AdminLoginPostRequestDTO = {

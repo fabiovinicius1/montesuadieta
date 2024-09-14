@@ -15,6 +15,11 @@ export const usuarioLoginService = async (usuarioLoginPostRequestDTO: UsuarioLog
 	if (!validacaoSenha) {
 		throw authError()
 	}
-	const token = jwt.sign(usuarioLoginPostRequestDTO.login, SECRET!);
+	const payload = {
+		login: usuarioLoginPostRequestDTO.login,
+		cargo: 'user',
+		id: usuarioPesquisado.id
+	};
+	const token = jwt.sign(payload, SECRET!);
 	return token;
 };

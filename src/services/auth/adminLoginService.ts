@@ -15,6 +15,11 @@ export const adminLoginService = async (adminPostPutRequestDTO: AdminPostPutRequ
 	if (!validacaoSenha) {
 		throw authError()
 	}
-	const token = jwt.sign(adminPostPutRequestDTO.login, SECRET!);
+	const payload = {
+		login: adminPostPutRequestDTO.login,
+		cargo: 'admin',
+		id: usuarioPesquisado.id
+	};
+	const token = jwt.sign(payload, SECRET!);
 	return token;
 };
