@@ -56,14 +56,16 @@ A documentação da API pode ser encontrada no [SwaggerHub](https://app.swaggerh
 	```bash
 	npm run migrate:teste
 	```
+## Teste 
 
 9. Rodando os teste
 
 	```bash
 	npm run migrate:teste
 	```
+## Aplicaçao
 
-10. Rodando os servidor
+10. Rodando a aplicação
 	```bash
 	npm run dev
 	```
