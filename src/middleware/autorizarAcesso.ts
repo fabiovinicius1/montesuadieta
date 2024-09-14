@@ -14,5 +14,8 @@ export const autorizarAcesso = (req: Request, res: Response, next: NextFunction)
 		if (tokenPayload.cargo == 'admin') {
 			res.status(403).json({ message: 'Acesso negado. Recurso pertence a um usuário.' });
 		}
+		else{
+			next()
+		}
 	}
 };
