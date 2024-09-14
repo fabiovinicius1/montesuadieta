@@ -18,14 +18,8 @@ beforeAll(async () => {
 });
 
 beforeEach(async () => {
-	await prisma.$executeRaw`DELETE FROM usuarios;`
-	await prisma.$executeRaw`DELETE FROM alimentosTabelaApp;`
-	await prisma.$executeRaw`DELETE FROM refeicaoUsuario;`
-	await prisma.$executeRaw`DELETE FROM alimentosRefeicao;`
-	await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='alimentosTabelaApp';`
-	await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='usuarios';`
-	await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='refeicaoUsuario';`
-	await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='alimentosRefeicao';`
+	await prisma.$executeRaw`TRUNCATE TABLE "usuarios" RESTART IDENTITY CASCADE;`;
+	await prisma.$executeRaw`TRUNCATE TABLE "alimentosTabelaApp" RESTART IDENTITY;`;
 	const alimentoAppPostPutDto: AlimentoAppPostPutDto = {
 		"porcao": 100,
 		"nomeAlimentoApp": "arroz",
@@ -58,7 +52,7 @@ beforeEach(async () => {
 		'nomeRefeicao': 'Almoço',
 		'usuarioId': 1
 	};
-
+	
 	await prisma.refeicaoUsuario.create({
 		data: {
 			...refeicaoPostPutDto
@@ -78,18 +72,12 @@ beforeEach(async () => {
 			refeicaoId: 1
 		}
 	});
-
+	
 });
 
 afterEach(async () => {
-	await prisma.$executeRaw`DELETE FROM usuarios;`
-	await prisma.$executeRaw`DELETE FROM alimentosTabelaApp;`
-	await prisma.$executeRaw`DELETE FROM refeicaoUsuario;`
-	await prisma.$executeRaw`DELETE FROM alimentosRefeicao;`
-	await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='alimentosTabelaApp';`
-	await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='usuarios';`
-	await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='refeicaoUsuario';`
-	await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='alimentosRefeicao';`
+	await prisma.$executeRaw`TRUNCATE TABLE "usuarios" RESTART IDENTITY CASCADE;`;
+	await prisma.$executeRaw`TRUNCATE TABLE "alimentosTabelaApp" RESTART IDENTITY;`;
 });
 
 afterAll(async () => {

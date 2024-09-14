@@ -6,15 +6,15 @@ import { AdminLoginPostRequestDTO } from '../src/dto/adminDto/AdminLoginPosReque
 import { AdminGetDeleteRequestDTO } from '../src/dto/adminDto/AdminGetDeleteRequestDTO';
 
 const prisma = new PrismaClient();
-let token:any;
+let token: any;
 
 beforeAll(async () => {
 	prisma.$connect();
 });
 
 beforeEach(async () => {
-	await prisma.$executeRaw`DELETE FROM admin;`
-	await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='admin';`
+	await prisma.$executeRaw`TRUNCATE TABLE "admin" RESTART IDENTITY;`;
+
 	const adminPostPutRequestDTO: AdminPostPutRequestDTO = {
 		'login': 'admin',
 		'senha': '123456'
@@ -29,8 +29,7 @@ beforeEach(async () => {
 });
 
 afterEach(async () => {
-	await prisma.$executeRaw`DELETE FROM admin;`
-	await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='admin';`
+	await prisma.$executeRaw`TRUNCATE TABLE "admin" RESTART IDENTITY;`;
 });
 
 afterAll(async () => {

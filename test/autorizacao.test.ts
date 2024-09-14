@@ -16,16 +16,9 @@ beforeAll(async () => {
 });
 
 beforeEach(async () => {
-	await prisma.$executeRaw`DELETE FROM usuarios;`
-	await prisma.$executeRaw`DELETE FROM alimentosTabelaApp;`
-	await prisma.$executeRaw`DELETE FROM refeicaoUsuario;`
-	await prisma.$executeRaw`DELETE FROM alimentosRefeicao;`
-	await prisma.$executeRaw`DELETE FROM admin;`
-	await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='alimentosTabelaApp';`
-	await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='usuarios';`
-	await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='refeicaoUsuario';`
-	await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='alimentosRefeicao';`
-	await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='admin';`
+	await prisma.$executeRaw`TRUNCATE TABLE "usuarios" RESTART IDENTITY CASCADE;`;
+	await prisma.$executeRaw`TRUNCATE TABLE "alimentosTabelaApp" RESTART IDENTITY;`;
+	await prisma.$executeRaw`TRUNCATE TABLE "admin" RESTART IDENTITY;`;
 	const usuarioPostPutRequestDTO: UsuarioPostPutRequestDTO = {
 		'login': 'siqueira',
 		'peso': 72,
@@ -69,16 +62,9 @@ beforeEach(async () => {
 });
 
 afterEach(async () => {
-	await prisma.$executeRaw`DELETE FROM usuarios;`
-	await prisma.$executeRaw`DELETE FROM alimentosTabelaApp;`
-	await prisma.$executeRaw`DELETE FROM refeicaoUsuario;`
-	await prisma.$executeRaw`DELETE FROM alimentosRefeicao;`
-	await prisma.$executeRaw`DELETE FROM admin;`
-	await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='alimentosTabelaApp';`
-	await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='usuarios';`
-	await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='refeicaoUsuario';`
-	await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='alimentosRefeicao';`
-	await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name='admin';`
+	await prisma.$executeRaw`TRUNCATE TABLE "usuarios" RESTART IDENTITY CASCADE;`;
+	await prisma.$executeRaw`TRUNCATE TABLE "alimentosTabelaApp" RESTART IDENTITY;`;
+	await prisma.$executeRaw`TRUNCATE TABLE "admin" RESTART IDENTITY;`;
 });
 
 afterAll(async () => {
