@@ -7,14 +7,14 @@ export const autorizarAcesso = (req: Request, res: Response, next: NextFunction)
 			next();
 		}
 		else {
-			res.status(403).json({ message: 'Acesso negado. Apenas administradores podem acessar esta rota.' });
+			res.status(403).json({ message: 'Acesso negado. Apenas administradores podem modificar esse recurso.' });
 		}
 	}
 	else {
 		if (tokenPayload.cargo == 'admin') {
 			res.status(403).json({ message: 'Acesso negado. Recurso pertence a um usuário.' });
 		}
-		else{
+		else {
 			next()
 		}
 	}

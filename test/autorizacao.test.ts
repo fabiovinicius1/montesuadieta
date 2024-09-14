@@ -118,7 +118,7 @@ describe('POST /alimentosApp/adicionar', () => {
 		}
 		const response = await request(app).post('/alimentosApp/adicionar').send(alimentoAppPostPutDto).set('Authorization', `${tokenUser}`);
 		expect(response.status).toBe(403);
-		expect(response.body).toEqual({ message: 'Acesso negado. Apenas administradores podem acessar esta rota.' });
+		expect(response.body).toEqual({ message: 'Acesso negado. Apenas administradores podem modificar esse recurso.' });
 	});
 });
 
@@ -136,7 +136,7 @@ describe('DELETE /alimentosApp/remover', () => {
 		}
 		const response = await request(app).delete('/alimentosApp/remover').send(alimentoAppGetDeleteDto).set('Authorization', `${tokenUser}`);
 		expect(response.status).toBe(403);
-		expect(response.body).toEqual({ message: 'Acesso negado. Apenas administradores podem acessar esta rota.' });
+		expect(response.body).toEqual({ message: 'Acesso negado. Apenas administradores podem modificar esse recurso.' });
 	});
 
 });
