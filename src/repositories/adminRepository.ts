@@ -1,10 +1,8 @@
-import { PrismaClient } from '@prisma/client';
 import { Admin } from '../model/Admin';
-
 import { AdminPostPutRequestDTO } from '../dto/adminDto/AdminPostPutRequestDTO';
 import { AdminGetDeleteRequestDTO } from '../dto/adminDto/AdminGetDeleteRequestDTO';
+import { prisma } from '../database/prismaClient';
 
-const prisma = new PrismaClient();
 
 export const buscarAdminPeloIdRepository = async (adminGetDeleteRequestDTO: AdminGetDeleteRequestDTO): Promise<Admin | null> => {
 	const { id } = adminGetDeleteRequestDTO;
@@ -12,7 +10,7 @@ export const buscarAdminPeloIdRepository = async (adminGetDeleteRequestDTO: Admi
 		where: {
 			id
 		},
-		select:{
+		select: {
 			id: true,
 			login: true,
 		}
@@ -36,7 +34,7 @@ export const adicionarAdminRepository = async (adminPostPutRequestDTO: AdminPost
 		data: {
 			...adminPostPutRequestDTO
 		},
-		select:{
+		select: {
 			id: true,
 			login: true,
 		}

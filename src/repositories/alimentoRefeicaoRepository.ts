@@ -2,9 +2,7 @@ import { RefeicaoAlimentoDeleteDto } from "../dto/refeicaoDto/RefeicaoAlimentoDe
 import { RefeicaoAlimentoPostDto } from "../dto/refeicaoDto/refeicaoAlimentoPostDto";
 import { AlimentoApp } from "../model/AlimentoApp";
 import { AlimentoRefeicao } from "../model/AlimentoRefeicao";
-import { Prisma, PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { prisma } from '../database/prismaClient';
 
 export const adicionarAlimentoRefeicaoRepository = async (refeicaoAlimentoPostDeleteDto: RefeicaoAlimentoPostDto, alimento: AlimentoApp): Promise<AlimentoRefeicao | null> => {
 	const { caloria, carboidrato, gordutaTotal, monoinsaturados, poliinsaturados, proteina, saturados, porcao } = alimento

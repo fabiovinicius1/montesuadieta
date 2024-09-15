@@ -2,9 +2,7 @@ import { RefeicaoGetDeleteDto } from '../dto/refeicaoDto/refeicaoGetDeleteDto';
 import { RefeicaoPatchNomeDto } from '../dto/refeicaoDto/refeicaoPatchNomeDto';
 import { RefeicaoPostPutDto } from '../dto/refeicaoDto/refeicaoPostPutDto';
 import { RefeicaoUsuario } from '../model/RefeicaoUsuario';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { prisma } from '../database/prismaClient';
 
 export const buscarRefeicaoPeloIdRepository = async (RefeicaoGetDeleteDto: RefeicaoGetDeleteDto): Promise<RefeicaoUsuario | null> => {
 	const { id } = RefeicaoGetDeleteDto;

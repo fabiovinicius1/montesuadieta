@@ -1,6 +1,6 @@
 import request from 'supertest';
 import { UsuarioPostPutRequestDTO } from '../src/dto/usuarioDto/usuarioPostPutRequestDTO';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '../src/database/prismaClient';
 import { UsuarioLoginPostRequestDTO } from '../src/dto/usuarioDto/usuarioLoginPostRequestDTO';
 import { app, server } from '../src/server';
 import { AdminPostPutRequestDTO } from '../src/dto/adminDto/AdminPostPutRequestDTO';
@@ -8,12 +8,8 @@ import { AdminLoginPostRequestDTO } from '../src/dto/adminDto/AdminLoginPosReque
 import { AlimentoAppPostPutDto } from '../src/dto/alimentoAppDto/alimentoAppPostPutDto';
 import { AlimentoAppGetDeleteDto } from '../src/dto/alimentoAppDto/alimentoAppGetDeleteDto';
 
-const prisma = new PrismaClient();
 let tokenUser: any;
 let tokenAdmin: any;
-beforeAll(async () => {
-	prisma.$connect();
-});
 
 beforeEach(async () => {
 	await prisma.$executeRaw`TRUNCATE TABLE "usuarios" RESTART IDENTITY CASCADE;`;

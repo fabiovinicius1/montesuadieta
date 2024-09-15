@@ -1,16 +1,11 @@
 import request from 'supertest';
-import { PrismaClient } from '@prisma/client';
 import { app, server } from '../src/server';
 import { AdminPostPutRequestDTO } from '../src/dto/adminDto/AdminPostPutRequestDTO';
 import { AdminLoginPostRequestDTO } from '../src/dto/adminDto/AdminLoginPosRequestDTO';
 import { AdminGetDeleteRequestDTO } from '../src/dto/adminDto/AdminGetDeleteRequestDTO';
+import { prisma } from '../src/database/prismaClient';
 
-const prisma = new PrismaClient();
 let token: any;
-
-beforeAll(async () => {
-	prisma.$connect();
-});
 
 beforeEach(async () => {
 	await prisma.$executeRaw`TRUNCATE TABLE "admin" RESTART IDENTITY;`;

@@ -1,6 +1,6 @@
 import request from 'supertest';
 import { UsuarioPostPutRequestDTO } from '../src/dto/usuarioDto/usuarioPostPutRequestDTO';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '../src/database/prismaClient';
 import { AlimentoAppPostPutDto } from '../src/dto/alimentoAppDto/alimentoAppPostPutDto';
 import { RefeicaoGetDeleteDto } from '../src/dto/refeicaoDto/refeicaoGetDeleteDto';
 import { RefeicaoPostPutDto } from '../src/dto/refeicaoDto/refeicaoPostPutDto';
@@ -10,12 +10,7 @@ import { RefeicaoAlimentoDeleteDto } from '../src/dto/refeicaoDto/RefeicaoAlimen
 import { app, server } from '../src/server';
 import { UsuarioLoginPostRequestDTO } from '../src/dto/usuarioDto/usuarioLoginPostRequestDTO';
 
-const prisma = new PrismaClient();
 let token:any;
-
-beforeAll(async () => {
-	prisma.$connect();
-});
 
 beforeEach(async () => {
 	await prisma.$executeRaw`TRUNCATE TABLE "usuarios" RESTART IDENTITY CASCADE;`;

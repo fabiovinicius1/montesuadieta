@@ -1,16 +1,11 @@
 import request from 'supertest';
 import { UsuarioPostPutRequestDTO } from '../src/dto/usuarioDto/usuarioPostPutRequestDTO';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '../src/database/prismaClient';
 import { UsuarioLoginPostRequestDTO } from '../src/dto/usuarioDto/usuarioLoginPostRequestDTO';
 import Jwt from 'jsonwebtoken';
 import { app, server } from '../src/server';
 import { AdminPostPutRequestDTO } from '../src/dto/adminDto/AdminPostPutRequestDTO';
 import { AdminLoginPostRequestDTO } from '../src/dto/adminDto/AdminLoginPosRequestDTO';
-
-const prisma = new PrismaClient();
-beforeAll(async () => {
-	prisma.$connect();
-});
 
 beforeEach(async () => {
 	await prisma.$executeRaw`TRUNCATE TABLE "usuarios" RESTART IDENTITY CASCADE;`;

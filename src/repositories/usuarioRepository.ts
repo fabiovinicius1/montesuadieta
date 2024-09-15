@@ -1,10 +1,8 @@
-import { PrismaClient } from '@prisma/client';
 import { Usuario } from '../model/Usuario';
 import { UsuarioPostPutRequestDTO } from '../dto/usuarioDto/usuarioPostPutRequestDTO';
 import { UsuarioGetDeleteRequestDTO } from '../dto/usuarioDto/usuarioGetDeleteRequestDTO';
 import { UsuarioPesoPatchRequestDTO } from '../dto/usuarioDto/usuarioPesoPatchRequestDTO';
-
-const prisma = new PrismaClient();
+import { prisma } from '../database/prismaClient';
 
 export const buscarUsuarioPeloIdRepository = async (id: number): Promise<Usuario | null> => {
 	const result = await prisma.usuarios.findFirst({

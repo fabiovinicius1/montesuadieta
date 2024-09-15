@@ -1,8 +1,7 @@
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '../database/prismaClient';
 import { AlimentoApp } from '../model/AlimentoApp';
 import { AlimentoAppPostPutDto } from '../dto/alimentoAppDto/alimentoAppPostPutDto';
 
-const prisma = new PrismaClient();
 
 export const addAlimentoAppRepository = async (alimentoAppPostPutDto: AlimentoAppPostPutDto): Promise<AlimentoApp | null> => {
 	const { nomeAlimentoApp, caloria, proteina, carboidrato, saturados, monoinsaturados, poliinsaturados, gordutaTotal, porcao } = alimentoAppPostPutDto;
