@@ -73,7 +73,7 @@ describe('POST /admin/adicionar', () => {
 		};
 		const response = await request(app).post('/admin/adicionar').send(adminPostPutRequestDTO);
 
-		expect(response.status).toBe(404);
+		expect(response.status).toBe(409);
 		expect(response.body).toEqual({ message: 'Login já existe!' });
 	});
 	it('Adiciona uma admin com login vazio', async () => {

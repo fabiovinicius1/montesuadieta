@@ -127,7 +127,7 @@ describe('POST /usuarios/adicionar', () => {
 		};
 		const response = await request(app).post('/usuarios/adicionar').send(usuarioPostPutRequestDTO);
 
-		expect(response.status).toBe(404);
+		expect(response.status).toBe(409);
 		expect(response.body).toEqual({ message: 'Login já existe!' });
 	});
 	it('Adiciona uma usuário com login vazio', async () => {
