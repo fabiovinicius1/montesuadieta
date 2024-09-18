@@ -9,6 +9,7 @@ import { RefeicaoAlimentoPostDto } from '../src/dto/refeicaoDto/refeicaoAlimento
 import { RefeicaoAlimentoGetDeleteDto } from '../src/dto/refeicaoDto/RefeicaoAlimentoGetDeleteDto';
 import { app, server } from '../src/server';
 import { UsuarioLoginPostRequestDTO } from '../src/dto/usuarioDto/usuarioLoginPostRequestDTO';
+import { RefeicaoAlimentoPatchQuantidadeDto } from '../src/dto/refeicaoDto/refeicaoAlimentoPatchQuantidade';
 
 let token: any;
 
@@ -309,6 +310,39 @@ describe('DELETE /refeicoes/remover/alimentoApp', () => {
 			'id': -1
 		}
 		const response = await request(app).delete('/refeicoes/remover/alimentoApp').send(refeicaoAlimentoDeleteDto).set('Authorization', `${token}`);
+
+		expect(response.status).toBe(400);
+		expect(response.body).toEqual({ message: 'Id deve ser um número positivo' });
+	});
+});
+
+describe('PATCH /atualizar/quantidade/alimentoApp', () => {
+	it('Atualiza a quantidade de um alimento que não existe na refeição do usuário', async () => {
+		const refeicaoAlimentoPatchQuantidadeDto: RefeicaoAlimentoPatchQuantidadeDto = {
+			'id': 100,
+			'quantidade': 200
+		}
+		const response = await request(app).patch('/refeicoes/atualizar/quantidade/alimentoApp').send(refeicaoAlimentoPatchQuantidadeDto).set('Authorization', `${token}`);
+
+		expect(response.status).toBe(404);
+		expect(response.body).toEqual({ message: 'Alimento não existe!' });
+	});
+	it('Atualiza a quantidade de um alimento que existe na refeição do usuário', async () => {
+		const refeicaoAlimentoPatchQuantidadeDto: RefeicaoAlimentoPatchQuantidadeDto = {
+			'id': 1,
+			'quantidade': 200
+		}
+		const response = await request(app).patch('/refeicoes/atualizar/quantidade/alimentoApp').send(refeicaoAlimentoPatchQuantidadeDto).set('Authorization', `${token}`);
+
+		expect(response.status).toBe(200);
+		expect(response.body).toHaveProperty('quantidade', 200);
+	});
+	it('Atualiza a quantidade de um alimento da refeição do usuario com id negativo', async () => {
+		const refeicaoAlimentoPatchQuantidadeDto: RefeicaoAlimentoPatchQuantidadeDto = {
+			'id': -1,
+			'quantidade': 200
+		}
+		const response = await request(app).patch('/refeicoes/atualizar/quantidade/alimentoApp').send(refeicaoAlimentoPatchQuantidadeDto).set('Authorization', `${token}`);
 
 		expect(response.status).toBe(400);
 		expect(response.body).toEqual({ message: 'Id deve ser um número positivo' });

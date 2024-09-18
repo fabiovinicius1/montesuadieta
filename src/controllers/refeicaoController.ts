@@ -12,6 +12,8 @@ import { refeicaoUsuarioRemoverAlimentoService } from '../services/refeicao/refe
 import { RefeicaoAlimentoGetDeleteDto, RefeicaoAlimentoGetDeleteSchema } from '../dto/refeicaoDto/RefeicaoAlimentoGetDeleteDto';
 import { autenticarToken } from '../middleware/autenticarToken';
 import { validarDados } from '../middleware/validacao';
+import { RefeicaoAlimentoPatchQuantidadeDto, RefeicaoAlimentoPatchQuantidadeSchema } from '../dto/refeicaoDto/refeicaoAlimentoPatchQuantidade';
+import { atualizarQuantidadeAlimentoRefeicaoUsuarioService } from '../services/refeicao/atualizarQuantidadeAlimentoRefeicaoUsuarioService';
 
 const router = Router();
 
@@ -54,5 +56,12 @@ router.delete('/remover/alimentoApp', validarDados(RefeicaoAlimentoGetDeleteSche
 	const refeicaoAlimentoGetDeleteDto: RefeicaoAlimentoGetDeleteDto = req.body
 	await refeicaoUsuarioRemoverAlimentoService(refeicaoAlimentoGetDeleteDto);
 	return res.status(204).json();
+});
+
+router.patch('/atualizar/quantidade/alimentoApp', validarDados(RefeicaoAlimentoPatchQuantidadeSchema), autenticarToken, async (req: Request, res: Response) => {
+	const refeicaoAlimentoPatchQuantidadeDto: RefeicaoAlimentoPatchQuantidadeDto = req.body;
+	const result = await atualizarQuantidadeAlimentoRefeicaoUsuarioService(refeicaoAlimentoPatchQuantidadeDto);
+	return res.status(200).json(result);
+
 });
 export default router;
