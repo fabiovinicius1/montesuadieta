@@ -6,11 +6,11 @@ import { RefeicaoGetDeleteDto } from '../src/dto/refeicaoDto/refeicaoGetDeleteDt
 import { RefeicaoPostPutDto } from '../src/dto/refeicaoDto/refeicaoPostPutDto';
 import { RefeicaoPatchNomeDto } from '../src/dto/refeicaoDto/refeicaoPatchNomeDto';
 import { RefeicaoAlimentoPostDto } from '../src/dto/refeicaoDto/refeicaoAlimentoPostDto';
-import { RefeicaoAlimentoDeleteDto } from '../src/dto/refeicaoDto/RefeicaoAlimentoDeleteDto';
+import { RefeicaoAlimentoGetDeleteDto } from '../src/dto/refeicaoDto/RefeicaoAlimentoGetDeleteDto';
 import { app, server } from '../src/server';
 import { UsuarioLoginPostRequestDTO } from '../src/dto/usuarioDto/usuarioLoginPostRequestDTO';
 
-let token:any;
+let token: any;
 
 beforeEach(async () => {
 	await prisma.$executeRaw`TRUNCATE TABLE "usuarios" RESTART IDENTITY CASCADE;`;
@@ -47,7 +47,7 @@ beforeEach(async () => {
 		'nomeRefeicao': 'Almoço',
 		'usuarioId': 1
 	};
-	
+
 	await prisma.refeicaoUsuario.create({
 		data: {
 			...refeicaoPostPutDto
@@ -64,10 +64,11 @@ beforeEach(async () => {
 			porcao: 100,
 			proteina: 12,
 			saturados: 1,
-			refeicaoId: 1
+			refeicaoId: 1,
+			quantidade: 100
 		}
 	});
-	
+
 });
 
 afterEach(async () => {
@@ -231,6 +232,7 @@ describe('POST /refeicoes/adicionar/alimentoApp', () => {
 		const refeicaoAlimentoPostDto: RefeicaoAlimentoPostDto = {
 			'idAlimento': 1,
 			'idRefeicao': 100,
+			'quantidade': 100
 		}
 		const response = await request(app).post('/refeicoes/adicionar/alimentoApp').send(refeicaoAlimentoPostDto).set('Authorization', `${token}`);
 
@@ -241,6 +243,7 @@ describe('POST /refeicoes/adicionar/alimentoApp', () => {
 		const refeicaoAlimentoPostDto: RefeicaoAlimentoPostDto = {
 			'idAlimento': 100,
 			'idRefeicao': 1,
+			'quantidade': 100
 		}
 		const response = await request(app).post('/refeicoes/adicionar/alimentoApp').send(refeicaoAlimentoPostDto).set('Authorization', `${token}`);
 
@@ -251,6 +254,7 @@ describe('POST /refeicoes/adicionar/alimentoApp', () => {
 		const refeicaoAlimentoPostDto: RefeicaoAlimentoPostDto = {
 			'idAlimento': 1,
 			'idRefeicao': 1,
+			'quantidade': 100
 		}
 		const response = await request(app).post('/refeicoes/adicionar/alimentoApp').send(refeicaoAlimentoPostDto).set('Authorization', `${token}`);
 
@@ -261,6 +265,7 @@ describe('POST /refeicoes/adicionar/alimentoApp', () => {
 		const refeicaoAlimentoPostDto: RefeicaoAlimentoPostDto = {
 			'idAlimento': -1,
 			'idRefeicao': 1,
+			'quantidade': 100
 		}
 		const response = await request(app).post('/refeicoes/adicionar/alimentoApp').send(refeicaoAlimentoPostDto).set('Authorization', `${token}`);
 
@@ -271,6 +276,7 @@ describe('POST /refeicoes/adicionar/alimentoApp', () => {
 		const refeicaoAlimentoPostDto: RefeicaoAlimentoPostDto = {
 			'idAlimento': 1,
 			'idRefeicao': -1,
+			'quantidade': 100
 		}
 		const response = await request(app).post('/refeicoes/adicionar/alimentoApp').send(refeicaoAlimentoPostDto).set('Authorization', `${token}`);
 
@@ -281,7 +287,7 @@ describe('POST /refeicoes/adicionar/alimentoApp', () => {
 
 describe('DELETE /refeicoes/remover/alimentoApp', () => {
 	it('Remove um alimento que não existe na refeição do usuário', async () => {
-		const refeicaoAlimentoDeleteDto: RefeicaoAlimentoDeleteDto = {
+		const refeicaoAlimentoDeleteDto: RefeicaoAlimentoGetDeleteDto = {
 			'id': 100
 		}
 		const response = await request(app).delete('/refeicoes/remover/alimentoApp').send(refeicaoAlimentoDeleteDto).set('Authorization', `${token}`);
@@ -290,7 +296,7 @@ describe('DELETE /refeicoes/remover/alimentoApp', () => {
 		expect(response.body).toEqual({ message: 'Alimento não existe na refeição!' });
 	});
 	it('Remove um alimento que existe na refeição do usuário', async () => {
-		const refeicaoAlimentoDeleteDto: RefeicaoAlimentoDeleteDto = {
+		const refeicaoAlimentoDeleteDto: RefeicaoAlimentoGetDeleteDto = {
 			'id': 1
 		}
 		const response = await request(app).delete('/refeicoes/remover/alimentoApp').send(refeicaoAlimentoDeleteDto).set('Authorization', `${token}`);
@@ -299,7 +305,7 @@ describe('DELETE /refeicoes/remover/alimentoApp', () => {
 		expect(response.body).toEqual({});
 	});
 	it('Remove um alimento da refeição com id negativo', async () => {
-		const refeicaoAlimentoDeleteDto: RefeicaoAlimentoDeleteDto = {
+		const refeicaoAlimentoDeleteDto: RefeicaoAlimentoGetDeleteDto = {
 			'id': -1
 		}
 		const response = await request(app).delete('/refeicoes/remover/alimentoApp').send(refeicaoAlimentoDeleteDto).set('Authorization', `${token}`);

@@ -9,7 +9,7 @@ import { atualizarNomeRefeicaoUsuarioService } from '../services/refeicao/refeic
 import { RefeicaoAlimentoPostDto, RefeicaoAlimentoPostSchema } from '../dto/refeicaoDto/refeicaoAlimentoPostDto';
 import { refeicaoUsuarioAdicionarAlimentoService } from '../services/refeicao/refeicaoUsuarioAdicionarAlimentoService';
 import { refeicaoUsuarioRemoverAlimentoService } from '../services/refeicao/refeicaoUsuarioRemoverAlimentoService';
-import { RefeicaoAlimentoDeleteDto, RefeicaoAlimentoDeleteSchema } from '../dto/refeicaoDto/RefeicaoAlimentoDeleteDto';
+import { RefeicaoAlimentoGetDeleteDto, RefeicaoAlimentoGetDeleteSchema } from '../dto/refeicaoDto/RefeicaoAlimentoGetDeleteDto';
 import { autenticarToken } from '../middleware/autenticarToken';
 import { validarDados } from '../middleware/validacao';
 
@@ -50,9 +50,9 @@ router.post('/adicionar/alimentoApp', validarDados(RefeicaoAlimentoPostSchema), 
 
 });
 
-router.delete('/remover/alimentoApp', validarDados(RefeicaoAlimentoDeleteSchema), autenticarToken, async (req: Request, res: Response) => {
-	const refeicaoAlimentoDeleteDto: RefeicaoAlimentoDeleteDto = req.body
-	await refeicaoUsuarioRemoverAlimentoService(refeicaoAlimentoDeleteDto);
+router.delete('/remover/alimentoApp', validarDados(RefeicaoAlimentoGetDeleteSchema), autenticarToken, async (req: Request, res: Response) => {
+	const refeicaoAlimentoGetDeleteDto: RefeicaoAlimentoGetDeleteDto = req.body
+	await refeicaoUsuarioRemoverAlimentoService(refeicaoAlimentoGetDeleteDto);
 	return res.status(204).json();
 });
 export default router;

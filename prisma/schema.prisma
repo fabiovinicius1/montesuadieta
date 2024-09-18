@@ -57,6 +57,7 @@ model refeicaoUsuario {
 
 model alimentosRefeicao {
     id                   Int             @id @default(autoincrement())
+    quantidade           Float
     porcao               Int
     nomeAlimentoRefeicao String
     caloria              Float
@@ -71,7 +72,7 @@ model alimentosRefeicao {
 }
 
 model admin {
-    id        Int                @id @default(autoincrement())
-    login     String             @unique
-    senha     String
+    id    Int    @id @default(autoincrement())
+    login String @unique
+    senha String
 }
