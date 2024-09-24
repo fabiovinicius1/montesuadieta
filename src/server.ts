@@ -1,5 +1,6 @@
 import "express-async-errors"
 import express from 'express';
+import cors from 'cors';
 import usuarioController from './controllers/usuarioController';
 import alimentoAppController from './controllers/alimentoAppController'
 import refeicaoController from './controllers/refeicaoController'
@@ -10,6 +11,10 @@ import { verificarConexaoDb } from "./middleware/verificaConexaoDb";
 
 const app = express();
 app.use(express.json());
+const corsOptions = {
+    origin: 'http://127.0.0.1:3030'
+};
+app.use(cors(corsOptions));
 app.use(verificarConexaoDb);
 app.use('/usuarios', usuarioController);
 app.use('/alimentosApp', alimentoAppController);
