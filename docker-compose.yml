@@ -16,7 +16,7 @@ services:
       options:
         max-size: 100m
   backend:
-      build: .
+      image: fabioviniciusfsiqueira/montesuadieta-backend:latest
       container_name: api-montesuadieta
       restart: always
       environment:
