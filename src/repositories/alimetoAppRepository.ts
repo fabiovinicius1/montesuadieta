@@ -30,6 +30,19 @@ export const pesquisaAlimentoAppPeloIdRepository = async (id: number): Promise<A
 	return result;
 };
 
+export const pesquisaAlimentoAppPeloNomeRepository = async (nomeAlimentoApp: string): Promise<AlimentoApp[]> => {
+	const results = await prisma.alimentosTabelaApp.findMany({
+		where: {
+			nomeAlimentoApp: {
+				contains: nomeAlimentoApp,
+				mode: 'insensitive'
+			}
+		}
+	});
+	return results;
+};
+
+
 export const removerAlimentoAppPeloIdRepository = async (id: number): Promise<AlimentoApp | null> => {
 	const result = await prisma.alimentosTabelaApp.delete({
 		where: {

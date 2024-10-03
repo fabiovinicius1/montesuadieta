@@ -7,7 +7,6 @@ import refeicaoController from './controllers/refeicaoController'
 import authController from './controllers/authController'
 import adminController from './controllers/adminController';
 import { errorMiddleware } from "./middleware/errorHttp";
-import { verificarConexaoDb } from "./middleware/verificaConexaoDb";
 
 const app = express();
 app.use(express.json());
