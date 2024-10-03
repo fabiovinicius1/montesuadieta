@@ -7,15 +7,10 @@ import refeicaoController from './controllers/refeicaoController'
 import authController from './controllers/authController'
 import adminController from './controllers/adminController';
 import { errorMiddleware } from "./middleware/errorHttp";
-import { verificarConexaoDb } from "./middleware/verificaConexaoDb";
 
 const app = express();
 app.use(express.json());
-const corsOptions = {
-    origin: 'http://127.0.0.1:3030'
-};
-app.use(cors(corsOptions));
-app.use(verificarConexaoDb);
+app.use(cors);
 app.use('/usuarios', usuarioController);
 app.use('/alimentosApp', alimentoAppController);
 app.use('/refeicoes', refeicaoController);
