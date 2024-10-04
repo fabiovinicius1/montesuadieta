@@ -18,7 +18,7 @@ import { atualizarQuantidadeAlimentoRefeicaoUsuarioService } from '../services/r
 const router = Router();
 
 router.get('/pesquisar', validarDados(RefeicaoGetDeleteSchema), autenticarToken, async (req: Request, res: Response) => {
-	const refeicaoGetDeleteDto: RefeicaoGetDeleteDto = req.body;
+	const refeicaoGetDeleteDto: RefeicaoGetDeleteDto = { id: Number(req.query.id) };
 	const result = await refeicaoUsuarioPesquisarService(refeicaoGetDeleteDto);
 	return res.status(200).json(result);
 

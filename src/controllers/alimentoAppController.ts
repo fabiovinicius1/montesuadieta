@@ -13,12 +13,12 @@ import { alimentoAppPesquisarNomeService } from '../services/alimentoApp/aliment
 const router = Router();
 
 router.get('/pesquisar', validarDados(AlimentoAppGetDeleteSchema), async (req: Request, res: Response) => {
-	const alimentoAppGetDeleteDto: AlimentoAppGetDeleteDto = req.body;
+	const alimentoAppGetDeleteDto: AlimentoAppGetDeleteDto = { id: Number(req.query.id) };
 	const result = await alimentoAppPesquisarService(alimentoAppGetDeleteDto);
 	return res.status(200).json(result);
 });
 router.get('/pesquisar/nome', validarDados(AlimentoAppGetDtoSchema), async (req: Request, res: Response) => {
-	const alimentoAppGetDto: AlimentoAppGetDto = req.body;
+	const alimentoAppGetDto: AlimentoAppGetDto = { nomeAlimentoApp: req.query.nomeAlimentoApp as string };
 	const result = await alimentoAppPesquisarNomeService(alimentoAppGetDto);
 	return res.status(200).json(result);
 });
