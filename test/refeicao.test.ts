@@ -87,7 +87,7 @@ describe('GET /refeicoes/pesquisar', () => {
 		const refeicaoGetDeleteDto: RefeicaoGetDeleteDto = {
 			'id': 100
 		}
-		const response = await request(app).get('/refeicoes/pesquisar').send(refeicaoGetDeleteDto).set('Authorization', `${token}`);
+		const response = await request(app).get('/refeicoes/pesquisar').query(refeicaoGetDeleteDto).set('Authorization', `${token}`);
 
 		expect(response.status).toBe(404);
 		expect(response.body).toEqual({ message: 'Refeição não existe!' });
@@ -96,7 +96,7 @@ describe('GET /refeicoes/pesquisar', () => {
 		const refeicaoGetDeleteDto: RefeicaoGetDeleteDto = {
 			'id': 1
 		}
-		const response = await request(app).get('/refeicoes/pesquisar').send(refeicaoGetDeleteDto).set('Authorization', `${token}`);
+		const response = await request(app).get('/refeicoes/pesquisar').query(refeicaoGetDeleteDto).set('Authorization', `${token}`);
 
 		expect(response.status).toBe(200);
 		expect(response.body).toHaveProperty('nomeRefeicao', 'Almoço');
@@ -105,7 +105,7 @@ describe('GET /refeicoes/pesquisar', () => {
 		const refeicaoGetDeleteDto: RefeicaoGetDeleteDto = {
 			'id': -1
 		}
-		const response = await request(app).get('/refeicoes/pesquisar').send(refeicaoGetDeleteDto).set('Authorization', `${token}`);
+		const response = await request(app).get('/refeicoes/pesquisar').query(refeicaoGetDeleteDto).set('Authorization', `${token}`);
 
 		expect(response.status).toBe(400);
 		expect(response.body).toEqual({ message: 'Id deve ser um número positivo' });

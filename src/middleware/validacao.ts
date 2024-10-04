@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 import { validacaoError } from '../error/validacaoError';
 
 export const validarDados = (schema: z.ZodSchema<any>) => (req: Request, res: Response, next: NextFunction) => {
-	const data = req.method === 'GET' ? req.query : req.body;
+	const data = req.method === 'GET' ? { ...req.query, id: Number(req.query.id) } : req.body;
 	const parseResult = schema.safeParse(data);
 
 	if (!parseResult.success) {
