@@ -41,6 +41,17 @@ export const pesquisaAlimentoAppPeloNomeRepository = async (nomeAlimentoApp: str
 	});
 	return results;
 };
+export const pesquisa1AlimentoAppPeloNomeRepository = async (nomeAlimentoApp: string): Promise<AlimentoApp | null> => {
+	const results = await prisma.alimentosTabelaApp.findFirst({
+		where: {
+			nomeAlimentoApp: {
+				contains: nomeAlimentoApp,
+				mode: 'insensitive'
+			}
+		}
+	});
+	return results;
+};
 
 
 export const removerAlimentoAppPeloIdRepository = async (id: number): Promise<AlimentoApp | null> => {

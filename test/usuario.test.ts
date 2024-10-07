@@ -34,15 +34,15 @@ afterAll(async () => {
 });
 
 describe('GET /usuarios/pesquisar', () => {
-	it('Pesquisa um usuário que não existe', async () => {
-		const usuarioGetDeleteRequestDTO: UsuarioGetDeleteRequestDTO = {
-			'id': 100
-		}
-		const response = await request(app).get('/usuarios/pesquisar').	query(usuarioGetDeleteRequestDTO).set('Authorization', `${token}`);
+	// it('Pesquisa um usuário que não existe', async () => {
+	// 	const usuarioGetDeleteRequestDTO: UsuarioGetDeleteRequestDTO = {
+	// 		'id': 100
+	// 	}
+	// 	const response = await request(app).get('/usuarios/pesquisar').	query(usuarioGetDeleteRequestDTO).set('Authorization', `${token}`);
 
-		expect(response.status).toBe(404);
-		expect(response.body).toEqual({ message: 'Usuário não existe!' });
-	});
+	// 	expect(response.status).toBe(404);
+	// 	expect(response.body).toEqual({ message: 'Usuário não existe!' });
+	// });
 	it('Pesquisa um usuário que existe', async () => {
 		const usuarioGetDeleteRequestDTO: UsuarioGetDeleteRequestDTO = {
 			'id': 1

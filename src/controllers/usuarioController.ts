@@ -12,7 +12,7 @@ import { validarDados } from '../middleware/validacao';
 const router = Router();
 
 router.get('/pesquisar', validarDados(UsuarioGetDeleteRequestSchema), autenticarToken, async (req: Request, res: Response) => {
-	const usuarioGetDeleteRequestDTO: UsuarioGetDeleteRequestDTO = { id: Number(req.query.id) };
+	const usuarioGetDeleteRequestDTO: UsuarioGetDeleteRequestDTO = req.body.tokenPayload;
 	const result = await pesquisarUsuarioService(usuarioGetDeleteRequestDTO);
 	return res.status(200).json(result);
 });
