@@ -55,7 +55,7 @@ describe('GET /alimentosApp/pesquisar', () => {
 		const alimentoAppGetDeleteDto: AlimentoAppGetDeleteDto = {
 			'id': 100
 		}
-		const response = await request(app).get('/alimentosApp/pesquisar').send(alimentoAppGetDeleteDto);
+		const response = await request(app).get('/alimentosApp/pesquisar').query(alimentoAppGetDeleteDto);
 
 		expect(response.status).toBe(404);
 		expect(response.body).toEqual({ message: 'Alimento não existe!' });
@@ -64,7 +64,7 @@ describe('GET /alimentosApp/pesquisar', () => {
 		const alimentoAppGetDeleteDto: AlimentoAppGetDeleteDto = {
 			'id': 1
 		}
-		const response = await request(app).get('/alimentosApp/pesquisar').send(alimentoAppGetDeleteDto);
+		const response = await request(app).get('/alimentosApp/pesquisar').query(alimentoAppGetDeleteDto);
 
 		expect(response.status).toBe(200);
 		expect(response.body).toHaveProperty('nomeAlimentoApp', 'arroz');
@@ -73,7 +73,7 @@ describe('GET /alimentosApp/pesquisar', () => {
 		const alimentoAppGetDeleteDto: AlimentoAppGetDeleteDto = {
 			'id': -1
 		}
-		const response = await request(app).get('/alimentosApp/pesquisar').send(alimentoAppGetDeleteDto);
+		const response = await request(app).get('/alimentosApp/pesquisar').query(alimentoAppGetDeleteDto);
 
 		expect(response.status).toBe(400);
 		expect(response.body).toEqual({ message: 'Id deve ser um número positivo' });

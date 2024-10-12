@@ -10,7 +10,7 @@ import { validarDados } from '../middleware/validacao';
 const router = Router();
 
 router.get('/pesquisar', validarDados(AdminGetDeleteRequestSchema), autenticarToken, async (req: Request, res: Response) => {
-	const adminGetDeleteRequestDTO: AdminGetDeleteRequestDTO = req.body;
+	const adminGetDeleteRequestDTO: AdminGetDeleteRequestDTO = { id: Number(req.query.id) };
 	const result = await pesquisarAdminService(adminGetDeleteRequestDTO);
 	return res.status(200).json(result);
 });

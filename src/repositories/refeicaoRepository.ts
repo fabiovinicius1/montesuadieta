@@ -16,6 +16,27 @@ export const buscarRefeicaoPeloIdRepository = async (RefeicaoGetDeleteDto: Refei
 	})
 	return result;
 };
+export const buscarTodasRefeicaoPeloRepository = async (usuarioId: number): Promise<RefeicaoUsuario[] | null> => {
+	const result = await prisma.refeicaoUsuario.findMany({
+		where: {
+			usuarioId
+		},
+		include:{
+			alimentosRefeicao:true
+		}
+	})
+	return result;
+};
+
+export const buscarRefeicaoUsusarioRepository = async (usuarioId: number, nomeRefeicao: string): Promise<RefeicaoUsuario | null> => {
+	const result = await prisma.refeicaoUsuario.findFirst({
+		where: {
+			usuarioId,
+			nomeRefeicao: nomeRefeicao
+		}
+	})
+	return result;
+};
 
 export const adicionarRefeicaoUsuarioRepository = async (refeicaoPostPutDto: RefeicaoPostPutDto): Promise<RefeicaoUsuario | null> => {
 	const { nomeRefeicao, usuarioId } = refeicaoPostPutDto;

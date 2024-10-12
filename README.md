@@ -2,70 +2,45 @@
 
 A documentação da API pode ser encontrada no [SwaggerHub](https://app.swaggerhub.com/apis-docs/FABIOVINICIUSFS1/montesuadieta/1.0.0).
 
-## Instalação
+## Rodando a aplicação via docker apos baixar o repositório git
+1. Clonar repositório
+   ```bash
+ 	git clone https://github.com/fabiovinicius1/montesuadieta.git
+   ```
+2. Navegando para o repositório
+   ```bash
+ 	cd montesuadieta/
+   ```
+3. Subindo os containers
+   ```bash
+ 	docker compose up -d
+   ```
+## Rodando a aplicação via docker 
 
-1. Clone o repositório
+1. Baixar a imagem do PostgreSQL
 
    ```bash
-   git clone https://github.com/fabiovinicius1/montesuadieta.git
+   docker pull postgres:latest
    ```
 
-2. Navegue para o repositorio do projeto
+2. Rodar o container do PostgreSQL
 
    ```bash
-   cd montesuadieta/
+	docker run -d --name db-montesuadieta -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=senha123 -e POSTGRES_DB=postgres -v pgdata-montesuadieta:/var/lib/postgresql/data -p 5432:5432 postgres:latest
    ```
 
-3. Instale as dependências
+3. Baixar a imagem do backend
 
    ```bash
-   npm install
+   docker pull fabioviniciusfsiqueira/montesuadieta-backend:latest
    ```
+4. Rodar o container do backend
 
-## Configuração inicial
+   ```bash
+	docker run -d --name api-montesuadieta --link db-montesuadieta:db -e DATABASE_URL="postgresql://postgres:senha123@db:5432/devdb?schema=public" -e SECRET=suaChaveSecretaSuperSegura123 -e PORT=3000 -p 3000:3000 fabioviniciusfsiqueira/montesuadieta-backend:latest sh -c "npm run migrate:dev && npm run dev"
+   ```
+5. Rodar o container de teste do backend
 
-4. Crie um arquivo **.env** com as seguinte variáveis:
-
-	```bash
-	DATABASE_URL = "postgresql://postgres:senha123@localhost:5432/devdb?schema=public"
-	SECRET = suaChaveSecretaSuperSegura123!@#
-	PORT = 3000
-	```
-
-5. Crie um arquivo **.env.test.local** com as seguinte variáveis:
-
-	```bash
-	DATABASE_URL = postgresql://postgres:senha123@localhost:5432/testedb?schema=public
-	SECRET = suaChaveSecretaSuperSegura123!@#
-	PORT = 3001
-	```
-
-6. Rode o comando docker compose para subir o serviço do postgres
-
-	```bash
-	docker compose up -d
-	```
-
-## Rodando as migrations do prisma
-
-7. Para o ambiente de desenvolvimento
-	```bash
-	npm run migrate:dev
-	```
-8. Para o ambiente de teste
-	```bash
-	npm run migrate:teste
-	```
-## Teste 
-
-9. Rodando os teste
-
-	```bash
-	npm run teste
-	```
-## Aplicaçao
-
-10. Rodando a aplicação
-	```bash
-	npm run dev
-	```
+   ```bash
+	docker run --rm --name api-montesuadieta-test --link db-montesuadieta:db -e DATABASE_URL="postgresql://postgres:senha123@db:5432/testedb?schema=public" -e SECRET=suaChaveSecretaSuperSegura123 -e PORT=3001 fabioviniciusfsiqueira/montesuadieta-backend:latest sh -c "npm run migrate:teste && npm run teste"
+   ```

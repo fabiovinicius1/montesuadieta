@@ -37,7 +37,7 @@ describe('GET /admin/pesquisar', () => {
 		const adminGetDeleteRequestDTO: AdminGetDeleteRequestDTO = {
 			'id': 100
 		}
-		const response = await request(app).get('/admin/pesquisar').send(adminGetDeleteRequestDTO).set('Authorization', `${token}`);
+		const response = await request(app).get('/admin/pesquisar').query(adminGetDeleteRequestDTO).set('Authorization', `${token}`);
 
 		expect(response.status).toBe(404);
 		expect(response.body).toEqual({ message: 'Admin não existe!' });
@@ -46,7 +46,7 @@ describe('GET /admin/pesquisar', () => {
 		const adminGetDeleteRequestDTO: AdminGetDeleteRequestDTO = {
 			'id': 1
 		}
-		const response = await request(app).get('/admin/pesquisar').send(adminGetDeleteRequestDTO).set('Authorization', `${token}`);
+		const response = await request(app).get('/admin/pesquisar').query(adminGetDeleteRequestDTO).set('Authorization', `${token}`);
 
 		expect(response.status).toBe(200);
 		expect(response.body).toHaveProperty('login', 'admin');
